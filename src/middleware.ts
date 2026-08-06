@@ -45,6 +45,6 @@ export const config = {
      * Authorisation is enforced by requireUser() in each route and, ultimately,
      * by RLS in the database.
      */
-    "/((?!_next/static|_next/image|favicon.ico|logo.png|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|logo.png|manifest.webmanifest|opengraph-image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2)$).*)",
   ],
 };
