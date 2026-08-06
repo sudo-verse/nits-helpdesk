@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 
 import type { UserRole } from "@/lib/constants";
+import { homeForRole } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database.types";
 
@@ -84,4 +85,47 @@ export function isAdminRole(role: UserRole): boolean {
 
 export function isStaffRole(role: UserRole): boolean {
   return role === "staff" || isAdminRole(role);
+}
+
+/**
+ * Where a freshly-signed-in user belongs: /login if the session is bad,
+ * /onboarding if it's their first time, otherwise their role's home page.
+ *
+ * Single source of truth shared by the OAuth callback chain (which redirects
+ * through /auth/post-login, a Route Handler reached via a real browser
+ * navigation) and the OTP/password Server Actions, which must redirect
+ * straight to the resolved page — `redirect()` from a Server Action does a
+ * client-side transition, and a Route Handler has no RSC representation for
+ * the client router to land on, so bouncing through /auth/post-login from a
+ * Server Action leaves the browser's URL out of sync with what's rendered.
+ */
+export async function resolveLandingPath(): Promise<string> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return "/login";
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role, onboarded_at, is_active")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile) {
+    // The trigger should have created this. If it is missing the account is
+    // in an inconsistent state — sign out rather than loop.
+    await supabase.auth.signOut();
+    return "/login?error=profile_missing";
+  }
+
+  if (!profile.is_active) {
+    await supabase.auth.signOut();
+    return "/login?error=account_disabled";
+  }
+
+  if (!profile.onboarded_at) return "/onboarding";
+
+  return homeForRole(profile.role);
 }

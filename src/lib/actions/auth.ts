@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { resolveLandingPath } from "@/lib/auth/session";
 import { env } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
@@ -107,8 +108,9 @@ export async function verifyOtp(
     return { status: "error", message: mapAuthError(error.message) };
   }
 
-  // Where to land is decided by /auth/post-login, which reads the profile.
-  redirect("/auth/post-login");
+  // Must redirect straight to the resolved page, not through the
+  // /auth/post-login Route Handler — see resolveLandingPath() for why.
+  redirect(await resolveLandingPath());
 }
 
 /**
@@ -170,7 +172,7 @@ export async function signUpWithPassword(
     };
   }
 
-  redirect("/auth/post-login");
+  redirect(await resolveLandingPath());
 }
 
 /** Sign in with an institute email and password. */
@@ -205,7 +207,7 @@ export async function signInWithPassword(
 
   if (error) return { status: "error", message: mapAuthError(error.message) };
 
-  redirect("/auth/post-login");
+  redirect(await resolveLandingPath());
 }
 
 function fieldErrorsFrom(error: {
@@ -290,7 +292,7 @@ export async function completeOnboarding(
   }
 
   revalidatePath("/", "layout");
-  redirect("/auth/post-login");
+  redirect(await resolveLandingPath());
 }
 
 export async function signOut() {
