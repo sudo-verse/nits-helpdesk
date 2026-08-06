@@ -21,7 +21,9 @@ type Tab = "unassigned" | "active" | "resolved" | "all";
 const TAB_FILTERS: Record<Tab, ComplaintFilters> = {
   unassigned: { unassignedOnly: true },
   active: { status: "in_progress" },
-  resolved: { status: "resolved" },
+  // Closed is resolved-and-archived, not a different outcome — the dashboard's
+  // "Resolved" stat tile already counts them together; this tab should too.
+  resolved: { status: ["resolved", "closed"] },
   all: {},
 };
 

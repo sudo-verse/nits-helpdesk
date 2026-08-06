@@ -49,7 +49,8 @@ export type ComplaintListItem = {
 };
 
 export type ComplaintFilters = {
-  status?: ComplaintStatus | "all";
+  /** A single status, several (e.g. "resolved" + "closed" for the admin queue), or "all". */
+  status?: ComplaintStatus | ComplaintStatus[] | "all";
   departmentId?: string;
   hostelId?: string;
   priority?: ComplaintPriority;
@@ -65,6 +66,7 @@ export type Page = { limit: number; offset: number };
 /** The subset of the Postgrest builder these filters need. */
 type Filterable<T> = {
   eq(column: string, value: string): T;
+  in(column: string, values: string[]): T;
   is(column: string, value: null): T;
   gte(column: string, value: string): T;
   lte(column: string, value: string): T;
@@ -77,7 +79,11 @@ function applyFilters<T extends Filterable<T>>(
 ): T {
   let q = query;
 
-  if (filters.status && filters.status !== "all") q = q.eq("status", filters.status);
+  if (filters.status && filters.status !== "all") {
+    q = Array.isArray(filters.status)
+      ? q.in("status", filters.status)
+      : q.eq("status", filters.status);
+  }
   if (filters.departmentId) q = q.eq("department_id", filters.departmentId);
   if (filters.hostelId) q = q.eq("hostel_id", filters.hostelId);
   if (filters.priority) q = q.eq("priority", filters.priority);
