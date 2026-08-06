@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
+    "test": "node --experimental-strip-types --import ./scripts/register-test-loader.mjs --test 'src/**/*.test.ts'",
     "fonts:icons": "node scripts/fetch-icon-font.mjs",
     "db:start": "supabase start",
     "db:stop": "supabase stop",

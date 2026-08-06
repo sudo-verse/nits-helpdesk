@@ -64,7 +64,7 @@ export type ComplaintFilters = {
 export type Page = { limit: number; offset: number };
 
 /** The subset of the Postgrest builder these filters need. */
-type Filterable<T> = {
+export type Filterable<T> = {
   eq(column: string, value: string): T;
   in(column: string, values: string[]): T;
   is(column: string, value: null): T;
@@ -73,7 +73,7 @@ type Filterable<T> = {
   or(filters: string): T;
 };
 
-function applyFilters<T extends Filterable<T>>(
+export function applyFilters<T extends Filterable<T>>(
   query: T,
   filters: ComplaintFilters,
 ): T {
