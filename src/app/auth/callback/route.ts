@@ -36,7 +36,17 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // A password-recovery link lands here through the same code-exchange
+  // mechanism as OAuth. `type=recovery` is Supabase's own signal for that;
+  // the `next=/reset-password` requestPasswordReset() embeds in the link is
+  // a second, independent signal in case `type` doesn't survive for any
+  // reason — either one alone is sufficient, and recovery always wins over
+  // an ordinary `next` if somehow both were present.
   const next = searchParams.get("next");
+  if (searchParams.get("type") === "recovery" || next === "/reset-password") {
+    return NextResponse.redirect(`${origin}/reset-password`);
+  }
+
   const forward = isSafeNextPath(next) ? `?next=${encodeURIComponent(next)}` : "";
   return NextResponse.redirect(`${origin}/auth/post-login${forward}`);
 }

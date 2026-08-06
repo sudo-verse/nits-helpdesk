@@ -14,6 +14,7 @@ import { fieldErrorsFrom } from "@/lib/utils/zod";
 import {
   forgotPasswordSchema,
   onboardingSchema,
+  resetPasswordSchema,
   signInSchema,
   signUpSchema,
 } from "@/lib/validations/auth";
@@ -181,6 +182,56 @@ export async function requestPasswordReset(
     status: "success",
     message: "If that address has an account, we've sent a link to reset the password.",
   };
+}
+
+/**
+ * Set a new password after following a reset-password email link.
+ *
+ * Requires the recovery session /auth/callback just established — there is
+ * no email/token in this form, unlike requestPasswordReset. See
+ * src/app/(auth)/reset-password/page.tsx, which gates on that session before
+ * this ever renders.
+ */
+export async function resetPassword(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login?error=session_expired");
+
+  const parsed = resetPasswordSchema.safeParse({
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  });
+
+  if (!parsed.success) {
+    return {
+      status: "error",
+      message: parsed.error.issues[0]?.message ?? "Check the highlighted fields.",
+      fieldErrors: fieldErrorsFrom(parsed.error),
+    };
+  }
+
+  if (!(await checkRateLimit(`reset-password:${user.id}`, 5, "15 minutes"))) {
+    return {
+      status: "error",
+      message: "Too many attempts. Wait a few minutes and try again.",
+    };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+
+  if (error) return { status: "error", message: mapAuthError(error.message) };
+
+  // In case the reset was triggered because the account was compromised —
+  // this password change should end every other session, not just this one.
+  await supabase.auth.signOut({ scope: "others" });
+
+  redirect(await resolveLandingPath());
 }
 
 export async function signInWithGoogle(next?: string): Promise<ActionState> {
