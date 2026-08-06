@@ -39,7 +39,10 @@ export async function updateComplaintStatus(
     complaintId: formData.get("complaintId"),
     complaintCode: formData.get("complaintCode"),
     status: formData.get("status"),
-    resolutionNote: formData.get("resolutionNote"),
+    // The note field only exists in the DOM for resolved/closed — absent
+    // fields come back as `null`, which `.optional()` rejects (it only
+    // widens to `string | undefined`).
+    resolutionNote: formData.get("resolutionNote") ?? undefined,
   });
 
   if (!parsed.success) {
