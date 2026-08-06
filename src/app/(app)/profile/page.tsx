@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { ChangePasswordForm } from "@/components/profile/change-password-form";
 import { ProfileCard } from "@/components/profile/profile-card";
 import { ProfileForm } from "@/components/profile/profile-form";
 import { SignOutButton } from "@/components/profile/sign-out-button";
@@ -77,13 +78,14 @@ export default async function ProfilePage() {
           </Card>
         </section>
 
-        <section className="md:col-span-8 lg:col-span-9">
+        <section className="flex flex-col gap-4 md:col-span-8 lg:col-span-9">
           <ProfileForm
             profile={user.profile}
             email={user.email}
             departments={departments}
             hostels={hostels}
           />
+          <ChangePasswordForm hasPasswordIdentity={user.hasPasswordIdentity} />
         </section>
       </div>
     </AppShell>

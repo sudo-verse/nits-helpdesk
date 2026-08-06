@@ -59,6 +59,21 @@ export const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
+// currentPassword is optional here — a Google-only account has none to
+// verify. Whether it's actually required is decided by the action, which
+// knows (from the session, not the client-submitted form) whether the
+// account has a password identity at all.
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().optional(),
+    newPassword: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
+
 export const onboardingSchema = z.object({
   name: z
     .string()

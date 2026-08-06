@@ -14,6 +14,8 @@ export type SessionUser = {
   id: string;
   email: string;
   profile: Profile;
+  /** Whether this account can sign in with a password (vs. Google-only). */
+  hasPasswordIdentity: boolean;
 };
 
 /**
@@ -41,7 +43,14 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
 
   if (!profile) return null;
 
-  return { id: user.id, email: user.email, profile };
+  return {
+    id: user.id,
+    email: user.email,
+    profile,
+    // No `email` identity means the account only ever signed in via Google —
+    // there is no password to verify or change, only one to set.
+    hasPasswordIdentity: user.identities?.some((i) => i.provider === "email") ?? true,
+  };
 });
 
 /**
