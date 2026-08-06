@@ -7,7 +7,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Select } from "@/components/ui/field";
+import { Field, Select } from "@/components/ui/field";
 import type { ActionState } from "@/lib/actions/auth";
 import { setUserActive, updateUserRole } from "@/lib/actions/admin";
 import { ROLE_META, type UserRole } from "@/lib/constants";
@@ -74,16 +74,18 @@ export function UserRow({
             <label htmlFor={`role-${user.id}`} className="sr-only">
               Role for {user.name ?? user.email}
             </label>
-            <Select
-              id={`role-${user.id}`}
-              name="role"
-              defaultValue={user.role}
-              className="w-36 py-2"
-            >
-              {(Object.keys(ROLE_META) as UserRole[]).map((r) => (
-                <option key={r} value={r}>{ROLE_META[r].label}</option>
-              ))}
-            </Select>
+            <Field className="contents">
+              <Select
+                id={`role-${user.id}`}
+                name="role"
+                defaultValue={user.role}
+                className="w-36 py-2"
+              >
+                {(Object.keys(ROLE_META) as UserRole[]).map((r) => (
+                  <option key={r} value={r}>{ROLE_META[r].label}</option>
+                ))}
+              </Select>
+            </Field>
 
             {/* A staff member's department decides which queue they can
                 service, so it is set alongside the role rather than left to
@@ -91,17 +93,19 @@ export function UserRow({
             <label htmlFor={`dept-${user.id}`} className="sr-only">
               Department for {user.name ?? user.email}
             </label>
-            <Select
-              id={`dept-${user.id}`}
-              name="departmentId"
-              defaultValue={user.department_id ?? ""}
-              className="w-44 py-2"
-            >
-              <option value="">No department</option>
-              {departments.map((d) => (
-                <option key={d.id} value={d.id}>{d.name}</option>
-              ))}
-            </Select>
+            <Field className="contents">
+              <Select
+                id={`dept-${user.id}`}
+                name="departmentId"
+                defaultValue={user.department_id ?? ""}
+                className="w-44 py-2"
+              >
+                <option value="">No department</option>
+                {departments.map((d) => (
+                  <option key={d.id} value={d.id}>{d.name}</option>
+                ))}
+              </Select>
+            </Field>
 
             <Button type="submit" size="sm" variant="secondary" isLoading={isPending}>
               Save
