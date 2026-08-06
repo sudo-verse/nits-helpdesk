@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
 /** Reachable without a session. */
-const PUBLIC_PATHS = ["/login", "/verify", "/auth", "/privacy", "/terms"];
+const PUBLIC_PATHS = ["/login", "/auth", "/privacy", "/terms"];
 
 function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.some(
@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // A signed-in user hitting the login screen belongs at their landing page.
-  if (user && (pathname === "/login" || pathname === "/verify")) {
+  if (user && pathname === "/login") {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/post-login";
     url.search = "";

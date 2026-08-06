@@ -21,32 +21,23 @@ export const instituteEmailSchema = z
     "Use your NIT Silchar account (ending with nits.ac.in).",
   );
 
-export const requestOtpSchema = z.object({
-  email: instituteEmailSchema,
-});
-
-export const verifyOtpSchema = z.object({
-  email: instituteEmailSchema,
-  token: z
-    .string()
-    .trim()
-    .regex(/^\d{6}$/, "Enter the 6-digit code from your email."),
-});
-
 export const signInSchema = z.object({
   email: instituteEmailSchema,
   password: z.string().min(1, "Enter your password."),
 });
 
+// 8 is stricter than Supabase's own minimum (6) — the project setting is
+// the real floor, this is just the app's preferred policy. Shared by every
+// schema below that collects a new password.
+export const passwordSchema = z
+  .string()
+  .min(8, "Use at least 8 characters.")
+  .max(72, "That password is too long.");
+
 export const signUpSchema = z
   .object({
     email: instituteEmailSchema,
-    // 8 is stricter than Supabase's own minimum (6) — the project setting is
-    // the real floor, this is just the app's preferred policy.
-    password: z
-      .string()
-      .min(8, "Use at least 8 characters.")
-      .max(72, "That password is too long."),
+    password: passwordSchema,
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -76,8 +67,6 @@ export const onboardingSchema = z.object({
     .or(z.literal("")),
 });
 
-export type RequestOtpInput = z.infer<typeof requestOtpSchema>;
-export type VerifyOtpInput = z.infer<typeof verifyOtpSchema>;
 export type SignInInput = z.infer<typeof signInSchema>;
 export type SignUpInput = z.infer<typeof signUpSchema>;
 export type OnboardingInput = z.infer<typeof onboardingSchema>;

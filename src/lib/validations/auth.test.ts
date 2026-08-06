@@ -6,7 +6,6 @@ import {
   onboardingSchema,
   signInSchema,
   signUpSchema,
-  verifyOtpSchema,
 } from "./auth.ts";
 
 test("instituteEmailSchema: accepts the bare institute domain", () => {
@@ -43,21 +42,6 @@ test("instituteEmailSchema: lowercases and trims", () => {
 test("instituteEmailSchema: rejects malformed addresses", () => {
   strictEqual(instituteEmailSchema.safeParse("not-an-email").success, false);
   strictEqual(instituteEmailSchema.safeParse("").success, false);
-});
-
-test("verifyOtpSchema: requires exactly 6 digits", () => {
-  strictEqual(
-    verifyOtpSchema.safeParse({ email: "a@nits.ac.in", token: "123456" }).success,
-    true,
-  );
-  strictEqual(
-    verifyOtpSchema.safeParse({ email: "a@nits.ac.in", token: "12345" }).success,
-    false,
-  );
-  strictEqual(
-    verifyOtpSchema.safeParse({ email: "a@nits.ac.in", token: "abcdef" }).success,
-    false,
-  );
 });
 
 test("signInSchema: any non-empty password is accepted (existing accounts may predate the app's own policy)", () => {

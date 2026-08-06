@@ -9,110 +9,12 @@ import { resolveLandingPath } from "@/lib/auth/session";
 import { env } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
-import {
-  onboardingSchema,
-  requestOtpSchema,
-  signInSchema,
-  signUpSchema,
-  verifyOtpSchema,
-} from "@/lib/validations/auth";
+import { onboardingSchema, signInSchema, signUpSchema } from "@/lib/validations/auth";
 
 export type ActionState =
   | { status: "idle" }
   | { status: "error"; message: string; fieldErrors?: Record<string, string[]> }
   | { status: "success"; message?: string };
-
-/**
- * Send a 6-digit OTP to an institute address.
- *
- * `shouldCreateUser: true` lets a first-time student sign in without a separate
- * signup flow. A non-institute address is caught here for the error message and
- * again by the database trigger, which is the actual boundary.
- */
-export async function requestOtp(
-  _prev: ActionState,
-  formData: FormData,
-): Promise<ActionState> {
-  const parsed = requestOtpSchema.safeParse({ email: formData.get("email") });
-
-  if (!parsed.success) {
-    return {
-      status: "error",
-      message: parsed.error.issues[0]?.message ?? "Enter a valid institute email.",
-      fieldErrors: { email: parsed.error.issues.map((i) => i.message) },
-    };
-  }
-
-  const { email } = parsed.data;
-
-  // Per-address limit stops someone spamming another student's inbox; the
-  // per-IP limit stops enumeration across many addresses.
-  const ip =
-    (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  const [emailOk, ipOk] = await Promise.all([
-    checkRateLimit(`otp:email:${email}`, 3, "5 minutes"),
-    checkRateLimit(`otp:ip:${ip}`, 10, "15 minutes"),
-  ]);
-
-  if (!emailOk || !ipOk) {
-    return {
-      status: "error",
-      message: "Too many code requests. Wait a few minutes and try again.",
-    };
-  }
-
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      shouldCreateUser: true,
-      emailRedirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-    },
-  });
-
-  if (error) {
-    return { status: "error", message: mapAuthError(error.message) };
-  }
-
-  redirect(`/verify?email=${encodeURIComponent(email)}`);
-}
-
-export async function verifyOtp(
-  _prev: ActionState,
-  formData: FormData,
-): Promise<ActionState> {
-  const parsed = verifyOtpSchema.safeParse({
-    email: formData.get("email"),
-    token: formData.get("token"),
-  });
-
-  if (!parsed.success) {
-    return {
-      status: "error",
-      message: parsed.error.issues[0]?.message ?? "Enter the 6-digit code.",
-    };
-  }
-
-  const { email, token } = parsed.data;
-
-  if (!(await checkRateLimit(`otp:verify:${email}`, 8, "10 minutes"))) {
-    return {
-      status: "error",
-      message: "Too many attempts. Request a new code in a few minutes.",
-    };
-  }
-
-  const supabase = await createClient();
-  const { error } = await supabase.auth.verifyOtp({ email, token, type: "email" });
-
-  if (error) {
-    return { status: "error", message: mapAuthError(error.message) };
-  }
-
-  // Must redirect straight to the resolved page, not through the
-  // /auth/post-login Route Handler — see resolveLandingPath() for why.
-  redirect(await resolveLandingPath());
-}
 
 /**
  * Create an account with an institute email and password.
