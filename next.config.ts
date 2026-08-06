@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import { withSentryConfig } from "@sentry/nextjs";
+
 /**
  * Supabase Storage serves attachments and avatars from the project host, which
  * next/image refuses to optimise unless it is explicitly allowlisted.
@@ -78,4 +80,14 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Uploads source maps for readable stack traces, and injects the
+// instrumentation hooks — no-ops (skips the upload step entirely) when
+// SENTRY_AUTH_TOKEN is unset, so this is safe before a Sentry project exists.
+export default withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  silent: true,
+  widenClientFileUpload: true,
+  telemetry: false,
+});

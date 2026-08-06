@@ -1,5 +1,6 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
 import { useEffect } from "react";
 
 import { Button, ButtonLink } from "@/components/ui/button";
@@ -13,9 +14,12 @@ export default function ErrorBoundary({
   reset: () => void;
 }) {
   useEffect(() => {
-    // In production the message is redacted to a digest; log it so the server
-    // trace can be correlated.
+    // In production the message is redacted to a digest here; the full error
+    // with stack trace was already captured server-side by onRequestError in
+    // instrumentation.ts, and Sentry links the two via the digest. Logging it
+    // too so the server trace can be correlated without leaving this tab.
     console.error("[error boundary]", error.digest ?? error.message);
+    Sentry.captureException(error);
   }, [error]);
 
   return (
