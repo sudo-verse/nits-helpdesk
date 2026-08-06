@@ -38,7 +38,14 @@ export default async function AdminDashboardPage({
     getStatusCounts(supabase, { departmentId }),
     listComplaints(
       supabase,
-      { departmentId, priority: "high" },
+      {
+        departmentId,
+        priority: "high",
+        // "Urgent" means still needs attention — a closed or resolved
+        // complaint isn't urgent anymore no matter what priority it was
+        // filed at.
+        status: ["submitted", "assigned", "under_review", "in_progress"],
+      },
       { limit: 5, offset: 0 },
     ),
     listComplaints(supabase, { departmentId, unassignedOnly: true }, { limit: 1, offset: 0 }),
