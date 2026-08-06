@@ -2,8 +2,11 @@ import { strictEqual } from "node:assert";
 import { test } from "node:test";
 
 import {
+  changePasswordSchema,
+  forgotPasswordSchema,
   instituteEmailSchema,
   onboardingSchema,
+  resetPasswordSchema,
   signInSchema,
   signUpSchema,
 } from "./auth.ts";
@@ -110,4 +113,64 @@ test("onboardingSchema: phone must be exactly 10 digits when provided", () => {
 
 test("onboardingSchema: rejects a name that's too short", () => {
   strictEqual(onboardingSchema.safeParse({ name: "R" }).success, false);
+});
+
+test("forgotPasswordSchema: only accepts a valid institute email", () => {
+  strictEqual(forgotPasswordSchema.safeParse({ email: "a@nits.ac.in" }).success, true);
+  strictEqual(forgotPasswordSchema.safeParse({ email: "a@gmail.com" }).success, false);
+});
+
+test("resetPasswordSchema: enforces the 8-character minimum", () => {
+  strictEqual(
+    resetPasswordSchema.safeParse({ password: "short1", confirmPassword: "short1" })
+      .success,
+    false,
+  );
+  strictEqual(
+    resetPasswordSchema.safeParse({
+      password: "longenough1",
+      confirmPassword: "longenough1",
+    }).success,
+    true,
+  );
+});
+
+test("resetPasswordSchema: rejects mismatched passwords and flags the confirm field", () => {
+  const result = resetPasswordSchema.safeParse({
+    password: "longenough1",
+    confirmPassword: "different1",
+  });
+  strictEqual(result.success, false);
+  if (!result.success) {
+    strictEqual(result.error.issues[0]?.path.join("."), "confirmPassword");
+  }
+});
+
+test("changePasswordSchema: currentPassword is optional at the schema level", () => {
+  // The schema can't know whether the account has a password identity to
+  // verify — that's decided by the action from the session, not the form.
+  const result = changePasswordSchema.safeParse({
+    newPassword: "longenough1",
+    confirmPassword: "longenough1",
+  });
+  strictEqual(result.success, true);
+});
+
+test("changePasswordSchema: still enforces the new-password rules", () => {
+  strictEqual(
+    changePasswordSchema.safeParse({
+      currentPassword: "old",
+      newPassword: "short1",
+      confirmPassword: "short1",
+    }).success,
+    false,
+  );
+  strictEqual(
+    changePasswordSchema.safeParse({
+      currentPassword: "old",
+      newPassword: "longenough1",
+      confirmPassword: "different1",
+    }).success,
+    false,
+  );
 });

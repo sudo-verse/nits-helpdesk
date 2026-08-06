@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   homeForRole,
   isNavItemActive,
+  isSafeNextPath,
   navForRole,
   secondaryNavForRole,
 } from "./navigation.ts";
@@ -51,4 +52,42 @@ test("isNavItemActive: does not match an unrelated sibling route", () => {
   strictEqual(isNavItemActive("/admin/users", "/admin/tasks"), false);
   // Prefix-of-the-string but not prefix-of-the-path — must not match.
   strictEqual(isNavItemActive("/admin/tasksomething", "/admin/tasks"), false);
+});
+
+test("isSafeNextPath: accepts realistic same-origin paths", () => {
+  strictEqual(isSafeNextPath("/complaints/CMP-123"), true);
+  strictEqual(isSafeNextPath("/dashboard?tab=x"), true);
+  strictEqual(isSafeNextPath("/"), true);
+});
+
+test("isSafeNextPath: rejects missing or empty values", () => {
+  strictEqual(isSafeNextPath(null), false);
+  strictEqual(isSafeNextPath(undefined), false);
+  strictEqual(isSafeNextPath(""), false);
+  strictEqual(isSafeNextPath(42), false);
+});
+
+test("isSafeNextPath: rejects absolute and protocol-relative URLs", () => {
+  strictEqual(isSafeNextPath("https://evil.com"), false);
+  strictEqual(isSafeNextPath("http://evil.com"), false);
+  // Browsers resolve a leading // against the current scheme — this is the
+  // classic open-redirect bypass a naive `startsWith("/")` check misses.
+  strictEqual(isSafeNextPath("//evil.com"), false);
+});
+
+test("isSafeNextPath: rejects the backslash variant some browsers normalise to //", () => {
+  strictEqual(isSafeNextPath("/\\evil.com"), false);
+});
+
+test("isSafeNextPath: rejects a scheme embedded mid-string", () => {
+  strictEqual(isSafeNextPath("/redirect?url=https://evil.com"), false);
+});
+
+test("isSafeNextPath: rejects whitespace/control characters and oversized input", () => {
+  strictEqual(isSafeNextPath("/foo\tbar"), false);
+  strictEqual(isSafeNextPath("/foo\nbar"), false);
+  // "/" + 511 chars = 512 total, exactly at the limit — allowed.
+  strictEqual(isSafeNextPath(`/${"a".repeat(511)}`), true);
+  // "/" + 512 chars = 513 total, one over — rejected.
+  strictEqual(isSafeNextPath(`/${"a".repeat(512)}`), false);
 });
