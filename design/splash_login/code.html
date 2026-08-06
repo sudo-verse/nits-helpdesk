@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NITS HelpDesk - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#f3f3f8",
+                      "surface-tint": "#2d6197",
+                      "on-tertiary-container": "#f9a767",
+                      "tertiary-fixed-dim": "#ffb780",
+                      "on-primary-fixed": "#001c37",
+                      "surface-bright": "#f9f9fe",
+                      "surface-container-highest": "#e2e2e7",
+                      "outline-variant": "#c2c7d1",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed": "#00174b",
+                      "inverse-on-surface": "#f0f0f5",
+                      "outline": "#727780",
+                      "on-surface": "#191c1f",
+                      "on-background": "#191c1f",
+                      "on-secondary-fixed-variant": "#003ea8",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#e2e2e7",
+                      "surface-container": "#ededf3",
+                      "on-error": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed": "#ffdcc4",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#743b00",
+                      "tertiary": "#532800",
+                      "inverse-surface": "#2e3034",
+                      "surface": "#f9f9fe",
+                      "on-secondary-container": "#fefcff",
+                      "primary": "#00355f",
+                      "secondary-fixed": "#dbe1ff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#07497d",
+                      "surface-container-high": "#e7e8ed",
+                      "secondary-fixed-dim": "#b4c5ff",
+                      "secondary": "#0051d5",
+                      "primary-container": "#0f4c81",
+                      "primary-fixed-dim": "#a0c9ff",
+                      "surface-dim": "#d9dadf",
+                      "on-tertiary-fixed": "#2f1400",
+                      "on-surface-variant": "#42474f",
+                      "on-tertiary-fixed-variant": "#6f3800",
+                      "on-primary-container": "#8ebdf9",
+                      "on-error-container": "#93000a",
+                      "secondary-container": "#316bf3",
+                      "primary-fixed": "#d2e4ff",
+                      "background": "#f9f9fe",
+                      "error-container": "#ffdad6",
+                      "inverse-primary": "#a0c9ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "20px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "base": "4px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "margin": "24px",
+                      "xl": "48px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "title-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "57px",
+                              {
+                                      "lineHeight": "64px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+          .splash-gradient {
+              background: linear-gradient(135deg, theme('colors.primary-fixed') 0%, theme('colors.background') 100%);
+          }
+          
+          @keyframes fadeOut {
+              from { opacity: 1; visibility: visible; }
+              to { opacity: 0; visibility: hidden; }
+          }
+          
+          .animate-fade-out {
+              animation: fadeOut 1s ease-out 2s forwards;
+          }
+          
+          .animate-pulse-slow {
+              animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Splash Screen Overlay -->
+<div class="fixed inset-0 z-50 flex flex-col items-center justify-center splash-gradient animate-fade-out pointer-events-none" id="splash-screen">
+<div class="flex flex-col items-center gap-lg">
+<img alt="NITS HelpDesk Logo" class="w-32 h-32 object-contain rounded-xl shadow-sm animate-pulse-slow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARhV9QH89oSxpsxM27fWiPO0s9poLw8ZMETKwmVi9eQUhUNjn7fVOuSNxpQt-GCSiipBoDwZxOUd3dLhrdfn-4Kk4BMkkVy67bxdzOp0Hsl27-hs4zGx3m7N4OrEQTD5PYI55M0iN1U_BJDkHIIPwjDqZkr5KOXwgmgicVQivYytMHS7IcKYxdUbvtzWov6jmNS0QduXiQ1QKvy24AdBqV6M_97ySjthEwGsVAgXFm8hqXzCHieOxv"/>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">NITS HelpDesk</h1>
+<div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mt-md"></div>
+</div>
+</div>
+<!-- Main Content Canvas (Login) -->
+<main class="w-full max-w-md mx-auto px-margin py-xl flex flex-col items-center z-10 relative">
+<!-- Subtle decorative background element for depth -->
+<div class="absolute -top-32 -left-32 w-64 h-64 bg-primary-fixed rounded-full blur-3xl opacity-50 -z-10"></div>
+<div class="absolute -bottom-32 -right-32 w-64 h-64 bg-secondary-fixed-dim rounded-full blur-3xl opacity-30 -z-10"></div>
+<div class="w-full flex flex-col items-center mb-xl">
+<h2 class="font-display-lg text-display-lg text-on-surface mb-sm text-center">Welcome Back</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-center max-w-[280px]">Sign in to track your support requests and manage academic resources.</p>
+</div>
+<div class="w-full flex flex-col gap-md">
+<button class="w-full flex items-center justify-center gap-sm bg-surface-container-low text-on-surface border border-outline-variant hover:bg-surface-container-high transition-colors rounded-lg py-sm px-md shadow-sm h-12">
+<span class="material-symbols-outlined text-[20px]">school</span>
+<span class="font-title-md text-title-md">Continue with Institute Email</span>
+</button>
+<div class="relative flex py-sm items-center w-full">
+<div class="flex-grow border-t border-outline-variant/50"></div>
+<span class="flex-shrink-0 mx-sm font-label-sm text-label-sm text-outline">OR</span>
+<div class="flex-grow border-t border-outline-variant/50"></div>
+</div>
+<button class="w-full flex items-center justify-center gap-sm bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container transition-colors rounded-lg py-sm px-md shadow-sm h-12">
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span class="font-title-md text-title-md">Continue with Google</span>
+</button>
+</div>
+<div class="mt-xl text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Helping make NIT Silchar better, together.</p>
+</div>
+</main>
+<script>
+        // Simple logic to remove splash screen from DOM after animation completes to free up interactions
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if(splash) {
+                    splash.style.display = 'none';
+                }
+            }, 3000); // Wait for fade out animation (2s delay + 1s duration)
+        });
+    </script>
+</body></html>

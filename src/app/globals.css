@@ -1,26 +1,365 @@
 @import "tailwindcss";
 
+/* next-themes writes `class="dark"` onto <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ *
+ * Design tokens — "Academic Precision"
+ *
+ * LIGHT values are copied verbatim from the Stitch design package
+ * (`academic_precision/DESIGN.md` + the tailwind.config block that is
+ * identical across all 8 code.html screens). Do not "improve" them.
+ *
+ * DARK values are the Material 3 dark counterpart derived from the same
+ * tonal palettes, per DESIGN.md: "deep obsidian background with charcoal
+ * surfaces". M3 `*-fixed` roles are intentionally identical in both
+ * schemes — that is what "fixed" means.
+ * ------------------------------------------------------------------ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* neutral / surface */
+  --surface: #f9f9fe;
+  --surface-dim: #d9dadf;
+  --surface-bright: #f9f9fe;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f3f3f8;
+  --surface-container: #ededf3;
+  --surface-container-high: #e7e8ed;
+  --surface-container-highest: #e2e2e7;
+  --surface-variant: #e2e2e7;
+  --on-surface: #191c1f;
+  --on-surface-variant: #42474f;
+  --inverse-surface: #2e3034;
+  --inverse-on-surface: #f0f0f5;
+  --outline: #727780;
+  --outline-variant: #c2c7d1;
+  --surface-tint: #2d6197;
+  --background: #f9f9fe;
+  --on-background: #191c1f;
+
+  /* primary — "NIT Blue" */
+  --primary: #00355f;
+  --on-primary: #ffffff;
+  --primary-container: #0f4c81;
+  --on-primary-container: #8ebdf9;
+  --inverse-primary: #a0c9ff;
+
+  /* secondary */
+  --secondary: #0051d5;
+  --on-secondary: #ffffff;
+  --secondary-container: #316bf3;
+  --on-secondary-container: #fefcff;
+
+  /* tertiary */
+  --tertiary: #532800;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #743b00;
+  --on-tertiary-container: #f9a767;
+
+  /* error */
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+
+  /* success — not in the ZIP; the screens hardcode emerald-500/600 and
+     #146C2E for "Resolved". Tokenised here so status colour is one source. */
+  --success: #146c2e;
+  --on-success: #ffffff;
+  --success-container: #a6f4b8;
+  --on-success-container: #002110;
+
+  /* fixed roles — identical across light and dark */
+  --primary-fixed: #d2e4ff;
+  --primary-fixed-dim: #a0c9ff;
+  --on-primary-fixed: #001c37;
+  --on-primary-fixed-variant: #07497d;
+  --secondary-fixed: #dbe1ff;
+  --secondary-fixed-dim: #b4c5ff;
+  --on-secondary-fixed: #00174b;
+  --on-secondary-fixed-variant: #003ea8;
+  --tertiary-fixed: #ffdcc4;
+  --tertiary-fixed-dim: #ffb780;
+  --on-tertiary-fixed: #2f1400;
+  --on-tertiary-fixed-variant: #6f3800;
+
+  /* elevation — DESIGN.md "Elevation & Depth" */
+  --elevation-1: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  --elevation-1-hover: 0px 8px 24px rgba(0, 0, 0, 0.08);
+  --elevation-2: 0px 12px 32px rgba(0, 0, 0, 0.1);
+  --elevation-nav: 0px -4px 12px rgba(0, 0, 0, 0.05);
+  --elevation-primary: 0px 4px 12px rgba(0, 53, 95, 0.2);
+}
+
+.dark {
+  /* neutral / surface — obsidian base, charcoal containers */
+  --surface: #101315;
+  --surface-dim: #101315;
+  --surface-bright: #36393c;
+  --surface-container-lowest: #0b0e10;
+  --surface-container-low: #191c1f;
+  --surface-container: #1d2023;
+  --surface-container-high: #272a2d;
+  --surface-container-highest: #323538;
+  --surface-variant: #42474f;
+  --on-surface: #e2e2e7;
+  --on-surface-variant: #c2c7d1;
+  --inverse-surface: #e2e2e7;
+  --inverse-on-surface: #2e3034;
+  --outline: #8c919b;
+  --outline-variant: #42474f;
+  --surface-tint: #a0c9ff;
+  --background: #101315;
+  --on-background: #e2e2e7;
+
+  --primary: #a0c9ff;
+  --on-primary: #00355f;
+  --primary-container: #0f4c81;
+  --on-primary-container: #d2e4ff;
+  --inverse-primary: #0f4c81;
+
+  --secondary: #b4c5ff;
+  --on-secondary: #002b7a;
+  --secondary-container: #003ea8;
+  --on-secondary-container: #dbe1ff;
+
+  --tertiary: #ffb780;
+  --on-tertiary: #4a2400;
+  --tertiary-container: #6f3800;
+  --on-tertiary-container: #ffdcc4;
+
+  --error: #ffb4ab;
+  --on-error: #690005;
+  --error-container: #93000a;
+  --on-error-container: #ffdad6;
+
+  --success: #8bd89f;
+  --on-success: #003919;
+  --success-container: #0b5323;
+  --on-success-container: #a6f4b8;
+
+  /* shadows need more force against a dark ground */
+  --elevation-1: 0px 4px 12px rgba(0, 0, 0, 0.4);
+  --elevation-1-hover: 0px 8px 24px rgba(0, 0, 0, 0.5);
+  --elevation-2: 0px 12px 32px rgba(0, 0, 0, 0.6);
+  --elevation-nav: 0px -4px 12px rgba(0, 0, 0, 0.4);
+  --elevation-primary: 0px 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 @theme inline {
+  /* ---- colours ---- */
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-surface-tint: var(--surface-tint);
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-on-background: var(--on-background);
+
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-inverse-primary: var(--inverse-primary);
+
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary: var(--on-tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+
+  --color-success: var(--success);
+  --color-on-success: var(--on-success);
+  --color-success-container: var(--success-container);
+  --color-on-success-container: var(--on-success-container);
+
+  --color-primary-fixed: var(--primary-fixed);
+  --color-primary-fixed-dim: var(--primary-fixed-dim);
+  --color-on-primary-fixed: var(--on-primary-fixed);
+  --color-on-primary-fixed-variant: var(--on-primary-fixed-variant);
+  --color-secondary-fixed: var(--secondary-fixed);
+  --color-secondary-fixed-dim: var(--secondary-fixed-dim);
+  --color-on-secondary-fixed: var(--on-secondary-fixed);
+  --color-on-secondary-fixed-variant: var(--on-secondary-fixed-variant);
+  --color-tertiary-fixed: var(--tertiary-fixed);
+  --color-tertiary-fixed-dim: var(--tertiary-fixed-dim);
+  --color-on-tertiary-fixed: var(--on-tertiary-fixed);
+  --color-on-tertiary-fixed-variant: var(--on-tertiary-fixed-variant);
+
+  /* ---- typography ---- */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --text-display-lg: 57px;
+  --text-display-lg--line-height: 64px;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--letter-spacing: -0.01em;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-lg-mobile: 28px;
+  --text-headline-lg-mobile--line-height: 36px;
+  --text-headline-lg-mobile--font-weight: 600;
+
+  --text-title-md: 16px;
+  --text-title-md--line-height: 24px;
+  --text-title-md--font-weight: 500;
+
+  --text-body-md: 14px;
+  --text-body-md--line-height: 20px;
+  --text-body-md--font-weight: 400;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--letter-spacing: 0.05em;
+  --text-label-sm--font-weight: 500;
+
+  /* ---- spacing ----
+     Deliberately NOT redefined. The Stitch 4px grid maps 1:1 onto Tailwind's
+     default numeric scale, so translate the design's class names directly:
+
+       base / xs  4px  → 1        gutter  20px → 5
+       sm         8px  → 2        lg / margin 24px → 6
+       md        16px  → 4        xl      48px → 12
+
+     Defining `--spacing-md` etc. would shadow Tailwind's `--container-*`
+     scale and silently break `max-w-md` (it resolved to 16px instead of
+     28rem, which would have collapsed the login card). Named spacing tokens
+     buy nothing here — the pixel values are identical either way. */
+
+  /* ---- radii ----
+     From the code.html config, which is what rendered the screenshots.
+     (DESIGN.md front-matter disagrees on `xl`; code.html wins.)
+     `card`/`modal` name the literal rounded-[16px]/[24px] in the markup. */
+  --radius-sm: 0.25rem;
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-card: 16px;
+  --radius-modal: 24px;
+  --radius-full: 9999px;
+
+  /* ---- elevation ---- */
+  --shadow-level1: var(--elevation-1);
+  --shadow-level1-hover: var(--elevation-1-hover);
+  --shadow-level2: var(--elevation-2);
+  --shadow-nav: var(--elevation-nav);
+  --shadow-primary: var(--elevation-primary);
+
+  /* ---- layout ---- */
+  --container-content: 1440px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    /* keeps the theme swap from flashing a white gutter */
+    background-color: var(--background);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--on-background);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  /* Inter variable: enable optical sizing per DESIGN.md */
+  * {
+    font-optical-sizing: auto;
+  }
+
+  ::selection {
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------ *
+ * Material Symbols Outlined — self-hosted, subsetted to the 141 icons
+ * this app actually uses (~131 KB vs ~4 MB for the full face).
+ * Regenerate with `npm run fonts:icons` after adding an icon name.
+ * The @font-face itself is declared by next/font/local in src/lib/fonts.ts.
+ * ------------------------------------------------------------------ */
+.material-symbols-outlined {
+  font-family: var(--font-material-symbols), "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* Horizontal chip/tab rails in the design scroll without a visible bar. */
+@utility hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* The bottom nav sits against the home indicator on iOS. */
+@utility pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* The glassmorphism treatment DESIGN.md reserves for sticky headers/navs. */
+@utility glass {
+  background-color: color-mix(in srgb, var(--surface) 70%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

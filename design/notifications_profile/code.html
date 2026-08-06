@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NIT Silchar Helpdesk - Notifications &amp; Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f3f3f8",
+                        "surface-tint": "#2d6197",
+                        "on-tertiary-container": "#f9a767",
+                        "tertiary-fixed-dim": "#ffb780",
+                        "on-primary-fixed": "#001c37",
+                        "surface-bright": "#f9f9fe",
+                        "surface-container-highest": "#e2e2e7",
+                        "outline-variant": "#c2c7d1",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#00174b",
+                        "inverse-on-surface": "#f0f0f5",
+                        "outline": "#727780",
+                        "on-surface": "#191c1f",
+                        "on-background": "#191c1f",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e2e2e7",
+                        "surface-container": "#ededf3",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffdcc4",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#743b00",
+                        "tertiary": "#532800",
+                        "inverse-surface": "#2e3034",
+                        "surface": "#f9f9fe",
+                        "on-secondary-container": "#fefcff",
+                        "primary": "#00355f",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#07497d",
+                        "surface-container-high": "#e7e8ed",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "secondary": "#0051d5",
+                        "primary-container": "#0f4c81",
+                        "primary-fixed-dim": "#a0c9ff",
+                        "surface-dim": "#d9dadf",
+                        "on-tertiary-fixed": "#2f1400",
+                        "on-surface-variant": "#42474f",
+                        "on-tertiary-fixed-variant": "#6f3800",
+                        "on-primary-container": "#8ebdf9",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#316bf3",
+                        "primary-fixed": "#d2e4ff",
+                        "background": "#f9f9fe",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#a0c9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin": "24px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter", "sans-serif"],
+                        "title-md": ["Inter", "sans-serif"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "label-sm": ["JetBrains Mono", "monospace"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-40 backdrop-blur-xl bg-surface/70 dark:bg-surface-dim/70 shadow-sm flex items-center justify-between px-margin py-md w-full">
+<button class="text-on-surface-variant dark:text-outline hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/50 transition-colors active:scale-95 duration-100 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">NIT Silchar Helpdesk</h1>
+<button class="hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/50 transition-colors active:scale-95 duration-100 rounded-full overflow-hidden w-10 h-10">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A close up, well-lit, professional headshot of a young university student in a bright modern environment. The student is smiling slightly and looking directly at the camera. The lighting highlights high contrast and clean tones. The aesthetic is crisp, reliable, and academic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYK2jlQadY3IklRcAI6baGmbFxbCC769UIB6uHsEZi16AOQD4-Cm5YoyLPI0yokSGR50Qr7Z3od4D53-GxCbE6YwM7LcmOvinsFwf6ftpW2k6KPAbxNQmX1MZLJAyn12kTcnx0FAzlNsA1UoPHRnfIrcE7T0teXjtYrZkQqNmBqyMlv56CKcUpoj902ecQSyNIlzKi_oDM2r9EOMnPtjTAZdddsjWTkVs9LIPYUYdDf2gc2IyDUGU6"/>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-margin py-lg pb-32 grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Profile Column (Left on Desktop, Top on Mobile) -->
+<section class="md:col-span-4 lg:col-span-3 flex flex-col gap-md">
+<!-- Student ID Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full overflow-hidden mb-sm border-2 border-surface-container-highest relative">
+<img alt="Student Photo" class="w-full h-full object-cover" data-alt="A close up, well-lit, professional headshot of a young university student in a bright modern environment. The student is smiling slightly and looking directly at the camera. The lighting highlights high contrast and clean tones. The aesthetic is crisp, reliable, and academic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZLVgxMKBebLBqKuBNBK4flZH12OrvDn7DpBZozWUuzQh9m8XphmlkmbsyLi2bOKDPMQnxGPqWxP2_bEE_WJFIKjwuiST1VOkn5IaAArQl2UulSNG8BZwOvGP2G0l9BVdaN9ntFZSpJQF2KG839j0yintx1FTZRPuTnWj7YGyhD0DLaA-1e3U54E11yBYrAHqt1Yj8QA_tYu_-0W0s4C5KE77TcjjnN6MA82u8aUtA43Eq8RE7MtRO"/>
+<!-- Status Indicator -->
+<div class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-surface-container-lowest"></div>
+</div>
+<h2 class="font-title-md text-title-md text-on-surface">Rahul Sharma</h2>
+<p class="font-label-sm text-label-sm text-outline mb-sm">B.Tech - Computer Science</p>
+<div class="flex gap-sm mb-md">
+<span class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-3 py-1 rounded-full">21-12-045</span>
+<span class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-3 py-1 rounded-full">rahul_21@nits.ac.in</span>
+</div>
+</div>
+<!-- Stats Overview Bento Box -->
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col">
+<span class="material-symbols-outlined text-secondary mb-xs" data-icon="pending_actions">pending_actions</span>
+<span class="font-headline-lg text-headline-lg text-on-surface">3</span>
+<span class="font-label-sm text-label-sm text-outline">Pending</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col">
+<span class="material-symbols-outlined text-emerald-600 mb-xs" data-icon="task_alt">task_alt</span>
+<span class="font-headline-lg text-headline-lg text-on-surface">12</span>
+<span class="font-label-sm text-label-sm text-outline">Resolved</span>
+</div>
+</div>
+<!-- Settings & Actions List -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col mt-sm">
+<button class="flex items-center gap-md p-md hover:bg-surface-container-high/30 transition-colors w-full text-left">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings">settings</span>
+<span class="font-title-md text-title-md text-on-surface flex-1">Settings</span>
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+<div class="h-px w-full bg-outline-variant/20"></div>
+<button class="flex items-center gap-md p-md hover:bg-surface-container-high/30 transition-colors w-full text-left">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="help_outline">help_outline</span>
+<span class="font-title-md text-title-md text-on-surface flex-1">Help &amp; Support</span>
+<span class="material-symbols-outlined text-outline text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+<div class="h-px w-full bg-outline-variant/20"></div>
+<button class="flex items-center gap-md p-md hover:bg-error-container/30 transition-colors w-full text-left text-error group">
+<span class="material-symbols-outlined group-hover:text-error transition-colors" data-icon="logout">logout</span>
+<span class="font-title-md text-title-md flex-1">Logout</span>
+</button>
+</div>
+</section>
+<!-- Notifications Column (Right on Desktop, Bottom on Mobile) -->
+<section class="md:col-span-8 lg:col-span-9 flex flex-col gap-md">
+<div class="flex items-center justify-between mb-sm">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-semibold">Notifications</h2>
+<button class="text-primary font-title-md text-title-md hover:underline">Mark all as read</button>
+</div>
+<!-- Notification List -->
+<div class="flex flex-col gap-sm">
+<!-- Unread Notification -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex gap-md relative overflow-hidden group cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="assignment_turned_in">assignment_turned_in</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold truncate pr-4">Ticket Resolved: Hostel Wi-Fi Issue</h3>
+<span class="font-label-sm text-label-sm text-primary shrink-0">2m ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Your complaint regarding the intermittent Wi-Fi connection in Hostel 9, Block C has been marked as resolved by the network team. Please verify.</p>
+</div>
+</div>
+<!-- Unread Notification (Alert) -->
+<div class="bg-error-container/10 rounded-xl border border-error/20 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex gap-md relative overflow-hidden group cursor-pointer hover:bg-error-container/20 transition-colors">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold truncate pr-4">System Maintenance</h3>
+<span class="font-label-sm text-label-sm text-error shrink-0">1h ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">The academic portal will be down for scheduled maintenance tonight from 11:00 PM to 2:00 AM IST. Please save your work.</p>
+</div>
+</div>
+<!-- Read Notification -->
+<div class="bg-surface-container-lowest opacity-75 rounded-xl border border-outline-variant/20 p-md flex gap-md cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="chat_bubble_outline">chat_bubble_outline</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-title-md text-title-md text-on-surface truncate pr-4">New comment on Ticket #4029</h3>
+<span class="font-label-sm text-label-sm text-outline shrink-0">Yesterday</span>
+</div>
+<p class="font-body-md text-body-md text-outline line-clamp-2">Admin replied: "We have noted the request for additional library hours during exam week. It is currently under review."</p>
+</div>
+</div>
+<!-- Read Notification -->
+<div class="bg-surface-container-lowest opacity-75 rounded-xl border border-outline-variant/20 p-md flex gap-md cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="update">update</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-title-md text-title-md text-on-surface truncate pr-4">Status Update: Mess Food Quality</h3>
+<span class="font-label-sm text-label-sm text-outline shrink-0">Oct 24</span>
+</div>
+<p class="font-body-md text-body-md text-outline line-clamp-2">The status of your ticket has changed from 'Pending' to 'In Progress'. The mess committee is investigating.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container dark:bg-surface-container-low border-t border-outline-variant/30 shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] flex justify-around items-center h-16 px-4 pb-safe w-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-5 py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-5 py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="assignment_late">assignment_late</span>
+<span class="font-label-sm text-label-sm mt-1">Complaints</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-5 py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-sm text-label-sm mt-1">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-secondary-container text-on-primary-container dark:text-on-secondary-container rounded-full px-5 py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

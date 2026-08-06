@@ -1,0 +1,78 @@
+import type { IconName } from "@/lib/icons";
+import type { UserRole } from "@/lib/constants";
+
+export type NavItem = {
+  href: string;
+  label: string;
+  icon: IconName;
+  /** Roles that see this item. Omitted = everyone. */
+  roles?: readonly UserRole[];
+};
+
+/**
+ * The four destinations in the Stitch bottom nav: Home, Complaints, Alerts,
+ * Profile. Each role gets the same shape, pointed at its own landing page, so
+ * the navigation looks identical regardless of who is signed in.
+ */
+export const STUDENT_NAV: readonly NavItem[] = [
+  { href: "/dashboard", label: "Home", icon: "home" },
+  { href: "/complaints", label: "Complaints", icon: "assignment_late" },
+  { href: "/notifications", label: "Alerts", icon: "notifications" },
+  { href: "/profile", label: "Profile", icon: "person" },
+] as const;
+
+export const STAFF_NAV: readonly NavItem[] = [
+  { href: "/staff", label: "Home", icon: "home" },
+  { href: "/staff/queue", label: "Complaints", icon: "assignment_late" },
+  { href: "/notifications", label: "Alerts", icon: "notifications" },
+  { href: "/profile", label: "Profile", icon: "person" },
+] as const;
+
+export const ADMIN_NAV: readonly NavItem[] = [
+  { href: "/admin", label: "Home", icon: "home" },
+  { href: "/admin/tasks", label: "Complaints", icon: "assignment_late" },
+  { href: "/notifications", label: "Alerts", icon: "notifications" },
+  { href: "/profile", label: "Profile", icon: "person" },
+] as const;
+
+/** Extra desktop-sidebar destinations that have no bottom-nav slot. */
+export const ADMIN_SECONDARY_NAV: readonly NavItem[] = [
+  { href: "/admin/departments", label: "Departments", icon: "domain" },
+  { href: "/admin/users", label: "Users", icon: "group" },
+  { href: "/admin/announcements", label: "Announcements", icon: "campaign" },
+  { href: "/admin/faq", label: "FAQ", icon: "question_answer" },
+  { href: "/admin/analytics", label: "Analytics", icon: "analytics" },
+] as const;
+
+export function navForRole(role: UserRole): readonly NavItem[] {
+  switch (role) {
+    case "staff":
+      return STAFF_NAV;
+    case "admin":
+    case "super_admin":
+      return ADMIN_NAV;
+    case "student":
+      return STUDENT_NAV;
+  }
+}
+
+export function secondaryNavForRole(role: UserRole): readonly NavItem[] {
+  return role === "admin" || role === "super_admin" ? ADMIN_SECONDARY_NAV : [];
+}
+
+/** Landing route after sign-in. */
+export function homeForRole(role: UserRole): string {
+  return navForRole(role)[0]?.href ?? "/dashboard";
+}
+
+/**
+ * Whether a nav item should render as active.
+ *
+ * Prefix matching, except for the role landing pages — "/admin" is a prefix of
+ * every admin route, so a plain startsWith would light up Home on every page.
+ */
+export function isNavItemActive(pathname: string, href: string): boolean {
+  const isRoot = ["/dashboard", "/staff", "/admin"].includes(href);
+  if (isRoot) return pathname === href;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}

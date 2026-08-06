@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Complaint History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f3f3f8",
+                        "surface-tint": "#2d6197",
+                        "on-tertiary-container": "#f9a767",
+                        "tertiary-fixed-dim": "#ffb780",
+                        "on-primary-fixed": "#001c37",
+                        "surface-bright": "#f9f9fe",
+                        "surface-container-highest": "#e2e2e7",
+                        "outline-variant": "#c2c7d1",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#00174b",
+                        "inverse-on-surface": "#f0f0f5",
+                        "outline": "#727780",
+                        "on-surface": "#191c1f",
+                        "on-background": "#191c1f",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e2e2e7",
+                        "surface-container": "#ededf3",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffdcc4",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#743b00",
+                        "tertiary": "#532800",
+                        "inverse-surface": "#2e3034",
+                        "surface": "#f9f9fe",
+                        "on-secondary-container": "#fefcff",
+                        "primary": "#00355f",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#07497d",
+                        "surface-container-high": "#e7e8ed",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "secondary": "#0051d5",
+                        "primary-container": "#0f4c81",
+                        "primary-fixed-dim": "#a0c9ff",
+                        "surface-dim": "#d9dadf",
+                        "on-tertiary-fixed": "#2f1400",
+                        "on-surface-variant": "#42474f",
+                        "on-tertiary-fixed-variant": "#6f3800",
+                        "on-primary-container": "#8ebdf9",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#316bf3",
+                        "primary-fixed": "#d2e4ff",
+                        "background": "#f9f9fe",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#a0c9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin": "24px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-md text-body-md flex flex-col md:flex-row">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-40 backdrop-blur-xl bg-surface/70 dark:bg-surface-dim/70 shadow-sm md:hidden">
+<div class="flex items-center justify-between px-margin py-md w-full">
+<button class="text-on-surface-variant hover:bg-surface-container-high/50 active:scale-95 duration-100 p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">
+                NIT Silchar Helpdesk
+            </h1>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/30 flex-shrink-0">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A professional headshot of a university student or staff member in a bright, modern indoor setting, evoking a sense of reliability and academic focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3AG96g4Qp1GnSArw0p06QQuZrriBFGY7JYGVirNsixRrWga1jjVvLyuCGAFvXn8FvBHiCP-LH1cIl9XjllQ9YqlVKABa-f-iFLCe6xE8wFHTcuVCrNffEdkW5lCPvoJvTmxRSR0seAJWWAxMmV613DBEoYj2T5tiRAWZqJE1LK9wBLr6icUKYQQMsdyfvw7mq2unKlxl6-SDynTqb9obTIzmCkf-qf4TGhZhBffdzFB9N9-onS8no"/>
+</div>
+</div>
+</header>
+<!-- SideNav (Desktop) -->
+<nav class="hidden md:flex flex-col w-64 bg-surface-container dark:bg-surface-container-low border-r border-outline-variant/30 h-screen sticky top-0">
+<div class="p-margin border-b border-outline-variant/30">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">NIT Silchar</h1>
+</div>
+<div class="flex flex-col gap-2 p-md flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-title-md text-title-md">Home</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-container text-on-primary-container" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+<span class="font-title-md text-title-md">Complaints</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-colors" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-title-md text-title-md">Alerts</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-title-md text-title-md">Profile</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow pb-24 md:pb-8">
+<div class="max-w-[1440px] mx-auto px-margin py-lg">
+<!-- Header & Search -->
+<div class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-background mb-4 hidden md:block">Complaints History</h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-4 py-3 rounded-xl border border-outline-variant bg-surface-bright focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" placeholder="Search complaints by ID, keyword, or department..." type="text"/>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex gap-3 mb-lg overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform">
+                    All
+                </button>
+<button class="px-4 py-2 rounded-full border border-outline-variant bg-surface-bright text-on-surface hover:bg-surface-container-high/50 font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform">
+                    Pending
+                </button>
+<button class="px-4 py-2 rounded-full border border-outline-variant bg-surface-bright text-on-surface hover:bg-surface-container-high/50 font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform">
+                    Resolved
+                </button>
+<button class="px-4 py-2 rounded-full border border-outline-variant bg-surface-bright text-on-surface hover:bg-surface-container-high/50 font-label-sm text-label-sm whitespace-nowrap active:scale-95 transition-transform">
+                    In Progress
+                </button>
+</div>
+<!-- Complaint List (Bento-style Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Card 1 (Pending) -->
+<div class="bg-surface-bright rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col gap-4 hover:shadow-[0px_12px_32px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer active:scale-[0.98]">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline mb-1">CPL-2023-089</span>
+<h3 class="font-title-md text-title-md text-on-background line-clamp-2">Hostel 9 WiFi Router Down</h3>
+</div>
+<div class="px-3 py-1 rounded-full bg-error-container/30 text-error font-label-sm text-label-sm flex items-center gap-1 shrink-0">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                            Pending
+                        </div>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md mt-auto pt-4 border-t border-surface-variant">
+<span class="material-symbols-outlined text-sm">domain</span>
+<span>IT Infrastructure</span>
+<span class="mx-2 text-outline">•</span>
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>Oct 24, 2023</span>
+</div>
+</div>
+<!-- Card 2 (In Progress) -->
+<div class="bg-surface-bright rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col gap-4 hover:shadow-[0px_12px_32px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer active:scale-[0.98]">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline mb-1">CPL-2023-087</span>
+<h3 class="font-title-md text-title-md text-on-background line-clamp-2">Leaking tap in Aryabhatta Washroom</h3>
+</div>
+<div class="px-3 py-1 rounded-full bg-tertiary-fixed/30 text-tertiary font-label-sm text-label-sm flex items-center gap-1 shrink-0">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                            In Progress
+                        </div>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md mt-auto pt-4 border-t border-surface-variant">
+<span class="material-symbols-outlined text-sm">plumbing</span>
+<span>Estate Maintenance</span>
+<span class="mx-2 text-outline">•</span>
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>Oct 23, 2023</span>
+</div>
+</div>
+<!-- Card 3 (Resolved) -->
+<div class="bg-surface-bright rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col gap-4 hover:shadow-[0px_12px_32px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer active:scale-[0.98] opacity-80">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline mb-1">CPL-2023-082</span>
+<h3 class="font-title-md text-title-md text-on-background line-clamp-2">Library AC Malfunction (Reading Room 2)</h3>
+</div>
+<div class="px-3 py-1 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-label-sm flex items-center gap-1 shrink-0">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                            Resolved
+                        </div>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md mt-auto pt-4 border-t border-surface-variant">
+<span class="material-symbols-outlined text-sm">engineering</span>
+<span>Electrical Dept</span>
+<span class="mx-2 text-outline">•</span>
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>Oct 20, 2023</span>
+</div>
+</div>
+<!-- Card 4 (Resolved) -->
+<div class="bg-surface-bright rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col gap-4 hover:shadow-[0px_12px_32px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer active:scale-[0.98] opacity-80">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline mb-1">CPL-2023-078</span>
+<h3 class="font-title-md text-title-md text-on-background line-clamp-2">Course Registration Portal 502 Error</h3>
+</div>
+<div class="px-3 py-1 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-label-sm flex items-center gap-1 shrink-0">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                            Resolved
+                        </div>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md mt-auto pt-4 border-t border-surface-variant">
+<span class="material-symbols-outlined text-sm">web</span>
+<span>Academic ERP</span>
+<span class="mx-2 text-outline">•</span>
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>Oct 18, 2023</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container dark:bg-surface-container-low shadow-[0px_-4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex justify-around items-center h-16 px-4 pb-safe w-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-5 py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm mt-1 hidden">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-secondary-container text-on-primary-container dark:text-on-secondary-container rounded-full px-5 py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+<span class="font-label-sm text-label-sm mt-1 hidden">Complaints</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-5 py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-sm text-label-sm mt-1 hidden">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-5 py-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1 hidden">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

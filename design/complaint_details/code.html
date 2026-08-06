@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Complaint Details - NIT Silchar Helpdesk</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f3f3f8",
+                        "surface-tint": "#2d6197",
+                        "on-tertiary-container": "#f9a767",
+                        "tertiary-fixed-dim": "#ffb780",
+                        "on-primary-fixed": "#001c37",
+                        "surface-bright": "#f9f9fe",
+                        "surface-container-highest": "#e2e2e7",
+                        "outline-variant": "#c2c7d1",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#00174b",
+                        "inverse-on-surface": "#f0f0f5",
+                        "outline": "#727780",
+                        "on-surface": "#191c1f",
+                        "on-background": "#191c1f",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e2e2e7",
+                        "surface-container": "#ededf3",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffdcc4",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#743b00",
+                        "tertiary": "#532800",
+                        "inverse-surface": "#2e3034",
+                        "surface": "#f9f9fe",
+                        "on-secondary-container": "#fefcff",
+                        "primary": "#00355f",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#07497d",
+                        "surface-container-high": "#e7e8ed",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "secondary": "#0051d5",
+                        "primary-container": "#0f4c81",
+                        "primary-fixed-dim": "#a0c9ff",
+                        "surface-dim": "#d9dadf",
+                        "on-tertiary-fixed": "#2f1400",
+                        "on-surface-variant": "#42474f",
+                        "on-tertiary-fixed-variant": "#6f3800",
+                        "on-primary-container": "#8ebdf9",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#316bf3",
+                        "primary-fixed": "#d2e4ff",
+                        "background": "#f9f9fe",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#a0c9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin": "24px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Progress Line Animation */
+        .timeline-line-active {
+            background: linear-gradient(to bottom, theme('colors.primary') 50%, theme('colors.surface-variant') 50%);
+            background-size: 100% 200%;
+            background-position: bottom;
+            animation: fillLine 1s ease-out forwards;
+        }
+        @keyframes fillLine {
+            to { background-position: top; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen pb-24 md:pb-0 font-body-md text-body-md text-on-background selection:bg-primary-container selection:text-on-primary-container antialiased">
+<!-- TopAppBar (Transactional page, nav elements suppressed from TopAppBar but header styling retained) -->
+<header class="w-full sticky top-0 z-40 backdrop-blur-xl bg-surface/70 shadow-sm flex items-center justify-between px-margin py-md w-full border-b-0">
+<div class="flex items-center gap-4">
+<button aria-label="Go back" class="p-2 -ml-2 rounded-full hover:bg-surface-container-high/50 active:scale-95 duration-100 transition-colors text-primary">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg font-bold text-primary tracking-tight">
+                Complaint #CMP-2023-8942
+            </h1>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-margin py-lg grid grid-cols-1 lg:grid-cols-12 gap-gutter w-full">
+<!-- Left Column: Primary Details & Timeline -->
+<div class="lg:col-span-7 flex flex-col gap-lg">
+<!-- Header Card (Status & Title) -->
+<section class="bg-surface rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-lg flex flex-col gap-md">
+<div class="flex flex-wrap items-center justify-between gap-4 border-b border-surface-variant pb-md">
+<div class="flex items-center gap-3">
+<span class="bg-secondary-container/20 text-secondary-fixed-variant px-4 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-2 border border-secondary-container/30">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-variant animate-pulse"></span>
+                            In Progress
+                        </span>
+<span class="bg-error-container/20 text-error px-4 py-1.5 rounded-full font-label-sm text-label-sm border border-error-container/30">
+                            High Priority
+                        </span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Reported: Oct 24, 2023</span>
+</div>
+<div>
+<h2 class="font-title-md text-title-md font-semibold text-on-surface mb-2">Network Outage in CSE Department Building, Lab 3</h2>
+<p class="text-on-surface-variant">
+                        The entire network cluster in Lab 3 has been down since morning. Switches appear unresponsive, and multiple students are unable to connect to the internal servers for the ongoing lab session. We have tried restarting the main switch but the issue persists.
+                    </p>
+</div>
+<!-- Info Grid Bento-style -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-sm bg-surface-container-low rounded-lg p-4 border border-outline-variant/20">
+<div>
+<p class="font-label-sm text-label-sm text-outline mb-1 uppercase tracking-wider">Department</p>
+<p class="font-title-md text-title-md text-on-surface">Computer Science</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline mb-1 uppercase tracking-wider">Location</p>
+<p class="font-title-md text-title-md text-on-surface">Lab 3, 2nd Floor</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline mb-1 uppercase tracking-wider">Category</p>
+<p class="font-title-md text-title-md text-on-surface">Network / IT</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline mb-1 uppercase tracking-wider">Assigned Staff</p>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-label-sm text-xs">RK</div>
+<p class="font-title-md text-title-md text-on-surface">R. Kumar (IT)</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Image Gallery -->
+<section class="bg-surface rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-lg">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">photo_library</span> Attached Evidence
+                </h3>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 snap-x">
+<div class="w-64 h-40 shrink-0 rounded-lg overflow-hidden snap-center relative border border-outline-variant/20 group cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" data-alt="A close-up photograph of a server rack inside a modern, sterile IT lab environment. The lighting is cool, clinical white fluorescent, reflecting off metallic surfaces. Several network switches are visible with blinking amber error lights instead of the usual green. Tangled ethernet cables add a subtle texture. The overall aesthetic is technical, slightly chaotic, and emphasizes the malfunction in a high-tech university setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQJoL_9g3l4IpG9pnf15Zc4OZyOTKDsghL_G_Eu1MFMPIFXWsTnrGGXZYUvfXkMAKRiAfN9LE4ANJT3bslZa7ES_JYghCb5RPqnyrUT9CEPae-kI1tQxqIPpGn1105frXR74fkUOOFLL6zX9yB5c-X-H06ypMv-hIpWhH46Bz595hrvXA57tLnqA6OX5iUhV71DDO5cdJwLRzs63Q4e12F3lz1uPFZ_ZFoZ5bW_g_jIyLd6vtkpdst"/>
+<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white">zoom_in</span>
+</div>
+</div>
+<div class="w-64 h-40 shrink-0 rounded-lg overflow-hidden snap-center relative border border-outline-variant/20 group cursor-pointer">
+<img class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" data-alt="A wide angle shot of an empty university computer lab. Rows of modern desktop computers sit idle with dark screens. The room is softly lit by natural light coming from large windows, contrasting with the dark technology. The atmosphere is quiet, stark, and highlights the inactivity caused by the network outage. Clean lines, minimalist academic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtBHhi0lPdoKagzGFuK10DHQ8Iyo77eGt-Idqs_1EhN48BtXmso05ciCbQUS7hzlLpo2dlsrN6kLKb174sSjy1oTPkM3BFbe9idIfgRlFzoQuVK1rXgyTU4Cd1veg0nB_rmu-1OnFvkV18lsrPK9WN9LHTB8m6AXCgvGwvGYU50MeYTjRIP2Uh4dv6PYielzSJXGsVrvZ2eFOmYSRvd3x1qulEDGwr-nZeNedq4x6pmk1gQF1NOX1K"/>
+<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white">zoom_in</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Timeline & Actions -->
+<div class="lg:col-span-5 flex flex-col gap-lg">
+<!-- Progress Timeline -->
+<section class="bg-surface rounded-xl border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-lg">
+<h3 class="font-title-md text-title-md font-semibold text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">timeline</span> Resolution Progress
+                </h3>
+<div class="relative pl-6">
+<!-- Vertical Line -->
+<div class="absolute left-[11px] top-2 bottom-6 w-0.5 bg-surface-variant rounded-full"></div>
+<!-- Active Line overlay -->
+<div class="absolute left-[11px] top-2 h-[75%] w-0.5 bg-primary rounded-full timeline-line-active"></div>
+<!-- Step 1: Submitted (Done) -->
+<div class="relative mb-8 pl-6">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center z-10 shadow-sm border-2 border-surface">
+<span class="material-symbols-outlined text-on-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<p class="font-title-md text-title-md font-medium text-on-surface">Submitted</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Oct 24, 09:15 AM by Student Portal</p>
+</div>
+<!-- Step 2: Assigned (Done) -->
+<div class="relative mb-8 pl-6">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center z-10 shadow-sm border-2 border-surface">
+<span class="material-symbols-outlined text-on-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<p class="font-title-md text-title-md font-medium text-on-surface">Assigned</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Oct 24, 09:45 AM - Routed to IT Infra</p>
+</div>
+<!-- Step 3: Under Review (Done) -->
+<div class="relative mb-8 pl-6">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center z-10 shadow-sm border-2 border-surface">
+<span class="material-symbols-outlined text-on-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<p class="font-title-md text-title-md font-medium text-on-surface">Under Review</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Oct 24, 10:30 AM - R. Kumar inspected issue</p>
+</div>
+<!-- Step 4: In Progress (Active) -->
+<div class="relative mb-8 pl-6">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-surface border-2 border-primary flex items-center justify-center z-10 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<p class="font-title-md text-title-md font-medium text-primary">In Progress</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Currently replacing faulty switch.</p>
+</div>
+<!-- Step 5: Resolved (Pending) -->
+<div class="relative pl-6">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-surface border-2 border-surface-variant flex items-center justify-center z-10">
+</div>
+<p class="font-title-md text-title-md font-medium text-outline">Resolved</p>
+</div>
+</div>
+</section>
+<!-- Action Area -->
+<section class="flex flex-col gap-4 mt-auto">
+<button class="w-full bg-primary text-on-primary rounded-lg py-3 px-4 font-title-md text-title-md font-medium hover:bg-primary/90 transition-colors shadow-sm flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">chat</span>
+                    Chat with Assigned Staff
+                </button>
+<button class="w-full bg-error/10 text-error rounded-lg py-3 px-4 font-title-md text-title-md font-medium hover:bg-error/20 border border-error/20 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">warning</span>
+                    Escalate Issue
+                </button>
+</section>
+</div>
+</main>
+<!-- Suppress navigation shell as this is a transactional detail view -->
+</body></html>

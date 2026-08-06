@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coordinator's Task Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f0f0f5",
+                        "on-surface": "#191c1f",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#d2e4ff",
+                        "surface-container-highest": "#e2e2e7",
+                        "inverse-primary": "#a0c9ff",
+                        "inverse-surface": "#2e3034",
+                        "secondary-container": "#316bf3",
+                        "outline-variant": "#c2c7d1",
+                        "outline": "#727780",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-tint": "#2d6197",
+                        "surface-container-high": "#e7e8ed",
+                        "tertiary": "#532800",
+                        "on-primary-fixed-variant": "#07497d",
+                        "surface-bright": "#f9f9fe",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#ededf3",
+                        "surface-variant": "#e2e2e7",
+                        "secondary": "#0051d5",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9fe",
+                        "tertiary-fixed": "#ffdcc4",
+                        "primary-container": "#0f4c81",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f9f9fe",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#2f1400",
+                        "on-background": "#191c1f",
+                        "surface-container-low": "#f3f3f8",
+                        "on-surface-variant": "#42474f",
+                        "on-tertiary-fixed-variant": "#6f3800",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-secondary-fixed": "#00174b",
+                        "on-secondary-container": "#fefcff",
+                        "on-primary-container": "#8ebdf9",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "primary-fixed-dim": "#a0c9ff",
+                        "surface-dim": "#d9dadf",
+                        "tertiary-container": "#743b00",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#f9a767",
+                        "primary": "#00355f",
+                        "tertiary-fixed-dim": "#ffb780",
+                        "on-primary-fixed": "#001c37",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xl": "48px",
+                        "md": "16px",
+                        "margin": "24px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row font-body-md text-body-md overflow-x-hidden">
+<!-- TopAppBar (Web) / Sidebar Navigation cluster -->
+<header class="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 bg-surface-container border-r border-outline-variant/30 p-margin z-40">
+<div class="mb-xl">
+<h1 class="font-headline-lg text-headline-lg text-primary font-bold tracking-tight">NIT Silchar Helpdesk</h1>
+</div>
+<nav class="flex flex-col gap-sm flex-grow">
+<a class="flex items-center gap-md px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-title-md text-title-md">Home</span>
+</a>
+<a class="flex items-center gap-md px-4 py-3 rounded-lg bg-primary-container text-on-primary-container font-medium" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+<span class="font-title-md text-title-md">Complaints</span>
+</a>
+<a class="flex items-center gap-md px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-colors" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-title-md text-title-md">Alerts</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-md">
+<a class="flex items-center gap-md px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 transition-colors" href="#">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-dim">
+<img class="object-cover w-full h-full" data-alt="A professional headshot of a university staff coordinator. The lighting is bright and even, set against a clean, light-mode background. The individual appears approachable yet authoritative, wearing smart-casual academic attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnUEmLGuzJeJCUIZxNNyh_snNNbiyEVfKDHZCaVaypDkfGq8znDmwUrxRHpct8_jeyQa1mtVr-hx327MzDuo_-dxW_Sezbbw-mkl6AgZRhufs9m6KY3dpPoBhLi7YqHLX3TtLKKAP-6L0b_72OOnaXV4wRtdDScHcykonNhf9ON2yVFiYU4-H3Ak0wKyPhD9ep-igO4W4lv8--fSCZVZ5DkzGV4PaWVz7mnxxxXwR9QwL8DeMnrjxW"/>
+</div>
+<span class="font-title-md text-title-md">Profile</span>
+</a>
+</div>
+</header>
+<!-- TopAppBar (Mobile) -->
+<div class="md:hidden w-full sticky top-0 z-40 backdrop-blur-xl bg-surface/70 shadow-sm flex items-center justify-between px-margin py-md">
+<button class="text-primary hover:bg-surface-container-high/50 rounded-full p-2 active:scale-95 duration-100 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">NIT Silchar Helpdesk</h1>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-dim shadow-sm">
+<img class="object-cover w-full h-full" data-alt="A professional headshot of a university staff coordinator. The lighting is bright and even, set against a clean, light-mode background. The individual appears approachable yet authoritative, wearing smart-casual academic attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxaeXCg4DEkp1zg1lqegGBZBtkHfhXSa7FGB1LOc_Mxfqu3Kamf8FfN7uGT4I5sgtI8VCP5lXVh_U9tKxw0aV5iM0IN5287YHUkyTIqMAo1j9Jo-wN7_AYWSAhEN2ueFJn9Lamo7EIThG_5MQNQVaKq4HkKTwVuJh0WC3AWRel-GIpS-pc_tU2gF4QNmSV9vQhAKxtJ-CqqHM_AMuRDp-WYDg03RqFARX3cxmV_LqVXjLASfhTNdlD"/>
+</div>
+</div>
+<!-- Main Content Canvas -->
+<main class="flex-grow md:ml-64 p-margin md:p-xl max-w-[1440px] mx-auto w-full flex flex-col gap-xl">
+<!-- Header & Search -->
+<div class="flex flex-col gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg md:text-display-lg font-bold text-on-surface">Task Management</h2>
+<p class="text-on-surface-variant mt-2">Manage and assign incoming department complaints.</p>
+</div>
+<div class="flex items-center gap-sm mt-md w-full max-w-2xl">
+<div class="relative flex-grow">
+<span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-on-surface placeholder-outline font-body-md text-body-md" placeholder="Search tickets, departments, or keywords..." type="text"/>
+</div>
+<button class="flex items-center justify-center p-3 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors bg-surface-container-lowest">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="border-b border-outline-variant/30 flex overflow-x-auto hide-scrollbar -mx-margin px-margin md:mx-0 md:px-0">
+<button class="px-lg py-3 border-b-2 border-primary text-primary font-title-md text-title-md whitespace-nowrap">Unassigned (12)</button>
+<button class="px-lg py-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/30 transition-colors font-title-md text-title-md whitespace-nowrap">Active</button>
+<button class="px-lg py-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/30 transition-colors font-title-md text-title-md whitespace-nowrap">Escalated</button>
+<button class="px-lg py-3 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/30 transition-colors font-title-md text-title-md whitespace-nowrap">Resolved</button>
+</div>
+<!-- Ticket List (Bento-style Grid) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-md">
+<!-- Ticket Card 1 -->
+<div class="bg-surface-container-lowest rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-lg flex flex-col gap-md hover:shadow-[0px_8px_24px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-outline">#CMP-9041</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Library AC Malfunction</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span> 30m ago
+                    </span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-error-container/50 text-on-error-container font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-error"></span> High Priority
+                    </span>
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">domain</span> Facilities / Library
+                    </span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/20 flex justify-end">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-title-md text-title-md hover:bg-primary/90 transition-colors">Assign</button>
+</div>
+</div>
+<!-- Ticket Card 2 -->
+<div class="bg-surface-container-lowest rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-lg flex flex-col gap-md hover:shadow-[0px_8px_24px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-outline">#CMP-9042</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Projector Bulb Replacement</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span> 1h ago
+                    </span>
+</div>
+<div class="flex items-center gap-sm flex-wrap">
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> Medium Priority
+                    </span>
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">desktop_windows</span> IT Support / ECE Dept (Room 302)
+                    </span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/20 flex justify-end">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-title-md text-title-md hover:bg-primary/90 transition-colors">Assign</button>
+</div>
+</div>
+<!-- Ticket Card 3 -->
+<div class="bg-surface-container-lowest rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-lg flex flex-col gap-md hover:shadow-[0px_8px_24px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-outline">#CMP-9043</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">Leaking Pipe in Washroom</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span> 2h ago
+                    </span>
+</div>
+<div class="flex items-center gap-sm flex-wrap">
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-error-container/50 text-on-error-container font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-error"></span> High Priority
+                    </span>
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">plumbing</span> Maintenance / Hostel 4
+                    </span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/20 flex justify-end">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-title-md text-title-md hover:bg-primary/90 transition-colors">Assign</button>
+</div>
+</div>
+</div>
+<!-- Bottom padding for mobile nav -->
+<div class="h-20 md:hidden"></div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container border-t border-outline-variant/30 shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] flex justify-around items-center h-16 px-4 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+<span class="font-label-sm text-label-sm mt-1">Complaints</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-sm text-label-sm mt-1">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

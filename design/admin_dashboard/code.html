@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NITS HelpDesk - Admin Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-on-surface": "#f0f0f5",
+                        "on-surface": "#191c1f",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#d2e4ff",
+                        "surface-container-highest": "#e2e2e7",
+                        "inverse-primary": "#a0c9ff",
+                        "inverse-surface": "#2e3034",
+                        "secondary-container": "#316bf3",
+                        "outline-variant": "#c2c7d1",
+                        "outline": "#727780",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-tint": "#2d6197",
+                        "surface-container-high": "#e7e8ed",
+                        "tertiary": "#532800",
+                        "on-primary-fixed-variant": "#07497d",
+                        "surface-bright": "#f9f9fe",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#ededf3",
+                        "surface-variant": "#e2e2e7",
+                        "secondary": "#0051d5",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9fe",
+                        "tertiary-fixed": "#ffdcc4",
+                        "primary-container": "#0f4c81",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f9f9fe",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#2f1400",
+                        "on-background": "#191c1f",
+                        "surface-container-low": "#f3f3f8",
+                        "on-surface-variant": "#42474f",
+                        "on-tertiary-fixed-variant": "#6f3800",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-secondary-fixed": "#00174b",
+                        "on-secondary-container": "#fefcff",
+                        "on-primary-container": "#8ebdf9",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "primary-fixed-dim": "#a0c9ff",
+                        "surface-dim": "#d9dadf",
+                        "tertiary-container": "#743b00",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#f9a767",
+                        "primary": "#00355f",
+                        "tertiary-fixed-dim": "#ffb780",
+                        "on-primary-fixed": "#001c37",
+                        "on-error": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "base": "4px",
+                        "xl": "48px",
+                        "md": "16px",
+                        "margin": "24px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "sm": "8px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["57px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col relative pb-[80px]">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-40 backdrop-blur-xl bg-surface/70 shadow-sm flex items-center justify-between px-margin py-md w-full">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[24px]" data-icon="arrow_back">arrow_back</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">NIT Silchar Helpdesk</h1>
+</div>
+<div>
+<img alt="User profile photo" class="w-10 h-10 rounded-full object-cover border border-outline-variant/30" data-alt="A small, circular profile picture of an academic coordinator, professional and welcoming. Modern light mode aesthetic with subtle lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkyhCOF-ojCGLb4YRc6VHwkhHAJGRvKvfERmt92WLrO7k0DQonCMKlDQkaO2Zqg_tFqlbfD1WIfiu5mKrhfeLlQtpm8sIvh2cOSyF6pwf26IbqPEWjxjQMXZ5xGCqQ8lDfRyjfNkArnJmqk7poS1OkxC3Aq_Zqo8l8S84fdIY5AerSUPMe2U-_JpC-AYeeLqddoRnjdAOaEYQC_rlQ46VrcGDyCoJP0i5oxuiScDZ2m44rsndTZwhW"/>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-margin py-lg md:px-xl md:py-xl flex flex-col gap-lg">
+<!-- Header Section -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Admin Overview</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Coordinator Dashboard</p>
+</div>
+<div class="hidden md:block">
+<button class="bg-primary text-on-primary font-title-md text-title-md px-md py-sm rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    New Ticket
+                 </button>
+</div>
+</div>
+<!-- Quick Stats Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<!-- Total Active -->
+<div class="bg-surface-container rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col justify-between h-[120px]">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-[24px]">assignment</span>
+<span class="bg-primary-container/20 text-primary font-label-sm text-label-sm px-2 py-1 rounded-full">+2%</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Active</p>
+<p class="font-headline-lg text-headline-lg text-on-surface mt-xs">48</p>
+</div>
+</div>
+<!-- High Priority -->
+<div class="bg-surface-container rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col justify-between h-[120px] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-16 h-16 bg-error/5 rounded-bl-full"></div>
+<div class="flex justify-between items-start relative z-10">
+<span class="material-symbols-outlined text-error text-[24px]">priority_high</span>
+</div>
+<div class="relative z-10">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">High Priority</p>
+<p class="font-headline-lg text-headline-lg text-on-surface mt-xs">12</p>
+</div>
+</div>
+<!-- Unassigned -->
+<div class="bg-surface-container rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col justify-between h-[120px]">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary text-[24px]">person_add</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Unassigned</p>
+<p class="font-headline-lg text-headline-lg text-on-surface mt-xs">8</p>
+</div>
+</div>
+<!-- Resolved Today -->
+<div class="bg-surface-container rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col justify-between h-[120px]">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-[#146C2E] text-[24px]">check_circle</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Resolved Today</p>
+<p class="font-headline-lg text-headline-lg text-on-surface mt-xs">15</p>
+</div>
+</div>
+</div>
+<!-- Department Distribution Chips -->
+<div class="w-full overflow-x-auto hide-scrollbar pb-xs">
+<div class="flex gap-sm min-w-max">
+<button class="bg-primary-container text-on-primary-container font-title-md text-title-md px-md py-sm rounded-full whitespace-nowrap border border-transparent">All</button>
+<button class="bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface font-title-md text-title-md px-md py-sm rounded-full whitespace-nowrap border border-outline-variant/30">IT</button>
+<button class="bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface font-title-md text-title-md px-md py-sm rounded-full whitespace-nowrap border border-outline-variant/30">Estate</button>
+<button class="bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface font-title-md text-title-md px-md py-sm rounded-full whitespace-nowrap border border-outline-variant/30">Electrical</button>
+<button class="bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface font-title-md text-title-md px-md py-sm rounded-full whitespace-nowrap border border-outline-variant/30">Academic</button>
+<button class="bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface font-title-md text-title-md px-md py-sm rounded-full whitespace-nowrap border border-outline-variant/30">Hostel</button>
+</div>
+</div>
+<!-- Recent Urgent Tasks -->
+<div class="flex flex-col gap-md">
+<h3 class="font-title-md text-title-md text-on-surface border-b border-outline-variant/30 pb-xs">Recent Urgent Tasks</h3>
+<div class="flex flex-col gap-sm">
+<!-- Task 1 -->
+<div class="bg-surface-container rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col md:flex-row md:items-center justify-between gap-sm hover:bg-surface-container-high/50 transition-colors cursor-pointer">
+<div class="flex items-start gap-md">
+<div class="mt-xs">
+<span class="material-symbols-outlined text-error text-[20px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Server Down - Library</h4>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-2 py-[2px] rounded-full">IT</span>
+<span class="font-body-md text-body-md text-outline text-[12px]">15m ago</span>
+</div>
+</div>
+</div>
+<div class="flex items-center md:justify-end">
+<span class="bg-error/10 text-error font-label-sm text-label-sm px-3 py-1 rounded-full whitespace-nowrap">High Priority</span>
+</div>
+</div>
+<!-- Task 2 -->
+<div class="bg-surface-container rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col md:flex-row md:items-center justify-between gap-sm hover:bg-surface-container-high/50 transition-colors cursor-pointer">
+<div class="flex items-start gap-md">
+<div class="mt-xs">
+<span class="material-symbols-outlined text-tertiary text-[20px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Water Leakage - Hostel 7</h4>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-2 py-[2px] rounded-full">Estate</span>
+<span class="font-body-md text-body-md text-outline text-[12px]">1h ago</span>
+</div>
+</div>
+</div>
+<div class="flex items-center md:justify-end">
+<span class="bg-tertiary/10 text-tertiary font-label-sm text-label-sm px-3 py-1 rounded-full whitespace-nowrap">Medium Priority</span>
+</div>
+</div>
+<!-- Task 3 -->
+<div class="bg-surface-container rounded-[16px] border border-outline-variant/30 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-md flex flex-col md:flex-row md:items-center justify-between gap-sm hover:bg-surface-container-high/50 transition-colors cursor-pointer">
+<div class="flex items-start gap-md">
+<div class="mt-xs">
+<span class="material-symbols-outlined text-error text-[20px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">WiFi Issues - Block C</h4>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-variant px-2 py-[2px] rounded-full">IT</span>
+<span class="font-body-md text-body-md text-outline text-[12px]">2h ago</span>
+</div>
+</div>
+</div>
+<div class="flex items-center md:justify-end">
+<span class="bg-error/10 text-error font-label-sm text-label-sm px-3 py-1 rounded-full whitespace-nowrap">High Priority</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface-container border-t border-outline-variant/30 shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] fixed bottom-0 w-full z-50 rounded-t-xl flex justify-around items-center h-16 px-4 pb-safe w-full">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<!-- Tasks / Complaints (Intent match to JSON labels) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="assignment_late">assignment_late</span>
+<span class="font-label-sm text-label-sm mt-1">Complaints</span>
+</a>
+<!-- Staff / Alerts -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="notifications">notifications</span>
+<span class="font-label-sm text-label-sm mt-1">Alerts</span>
+</a>
+<!-- Profile / Settings -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+</body></html>
