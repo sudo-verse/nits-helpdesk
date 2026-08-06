@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Typecheck, lint, unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      - run: npm run lint
+
+      - run: npm test
+
+  db-probe:
+    name: RLS security probes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      # Fresh runner, no persisted Docker volume — `start` applies every
+      # migration and supabase/seed.sql from scratch, same as a first-time
+      # `supabase start` on a new machine. rls_probes.sql only ever talks to
+      # Postgres directly (set_config, direct table access) — never through
+      # the REST/Auth/Storage APIs — so every other service is excluded to
+      # keep this job fast.
+      - run: supabase start --exclude gotrue,realtime,storage-api,imgproxy,kong,mailpit,postgrest,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+
+      - name: Run security probes
+        run: npm run db:probe
