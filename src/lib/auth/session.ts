@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 
 import type { UserRole } from "@/lib/constants";
-import { homeForRole } from "@/lib/navigation";
+import { homeForRole, isSafeNextPath } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database.types";
 
@@ -89,17 +89,22 @@ export function isStaffRole(role: UserRole): boolean {
 
 /**
  * Where a freshly-signed-in user belongs: /login if the session is bad,
- * /onboarding if it's their first time, otherwise their role's home page.
+ * /onboarding if it's their first time, otherwise `next` (if it's safe and
+ * present) or their role's home page.
  *
  * Single source of truth shared by the OAuth callback chain (which redirects
  * through /auth/post-login, a Route Handler reached via a real browser
- * navigation) and the OTP/password Server Actions, which must redirect
- * straight to the resolved page — `redirect()` from a Server Action does a
+ * navigation) and the password Server Actions, which must redirect straight
+ * to the resolved page — `redirect()` from a Server Action does a
  * client-side transition, and a Route Handler has no RSC representation for
  * the client router to land on, so bouncing through /auth/post-login from a
  * Server Action leaves the browser's URL out of sync with what's rendered.
+ *
+ * `next` is validated here, once, rather than at every call site — it can
+ * only ever substitute the *final* destination, never skip the error or
+ * onboarding gates above it.
  */
-export async function resolveLandingPath(): Promise<string> {
+export async function resolveLandingPath(next?: string | null): Promise<string> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -125,7 +130,12 @@ export async function resolveLandingPath(): Promise<string> {
     return "/login?error=account_disabled";
   }
 
-  if (!profile.onboarded_at) return "/onboarding";
+  if (!profile.onboarded_at) {
+    // Carried through so a first-time sign-in via a shared deep link still
+    // lands where it was headed once onboarding is done, not just for
+    // returning users.
+    return isSafeNextPath(next) ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding";
+  }
 
-  return homeForRole(profile.role);
+  return isSafeNextPath(next) ? next : homeForRole(profile.role);
 }

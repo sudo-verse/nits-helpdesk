@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,7 @@ const initialState: ActionState = { status: "idle" };
 type Mode = "signin" | "signup";
 
 /** Institute email + password, with a toggle between signing in and creating an account. */
-export function PasswordAuthForm() {
+export function PasswordAuthForm({ next }: { next?: string }) {
   const [mode, setMode] = useState<Mode>("signin");
   const [signInState, signInAction, signInPending] = useActionState(
     signInWithPassword,
@@ -60,6 +61,8 @@ export function PasswordAuthForm() {
 
       {/* Remounts the form on mode switch so leftover input/state doesn't bleed across. */}
       <form key={mode} action={action} className="flex flex-col gap-3">
+        {next && <input type="hidden" name="next" value={next} />}
+
         <Field label="Institute email" error={fieldErrors?.email?.[0]}>
           <Input
             name="email"
@@ -72,16 +75,26 @@ export function PasswordAuthForm() {
           />
         </Field>
 
-        <Field label="Password" error={fieldErrors?.password?.[0]}>
-          <Input
-            name="password"
-            type="password"
-            autoComplete={mode === "signin" ? "current-password" : "new-password"}
-            required
-            minLength={mode === "signup" ? 8 : undefined}
-            placeholder="••••••••"
-          />
-        </Field>
+        <div className="flex flex-col gap-1">
+          <Field label="Password" error={fieldErrors?.password?.[0]}>
+            <Input
+              name="password"
+              type="password"
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              required
+              minLength={mode === "signup" ? 8 : undefined}
+              placeholder="••••••••"
+            />
+          </Field>
+          {mode === "signin" && (
+            <Link
+              href="/forgot-password"
+              className="text-label-sm text-primary self-end hover:underline"
+            >
+              Forgot password?
+            </Link>
+          )}
+        </div>
 
         {mode === "signup" && (
           <Field label="Confirm password" error={fieldErrors?.confirmPassword?.[0]}>

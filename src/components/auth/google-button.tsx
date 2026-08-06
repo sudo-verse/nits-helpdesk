@@ -30,7 +30,13 @@ function GoogleMark() {
   );
 }
 
-export function GoogleButton({ className }: { className?: string }) {
+export function GoogleButton({
+  className,
+  next,
+}: {
+  className?: string;
+  next?: string;
+}) {
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -39,7 +45,7 @@ export function GoogleButton({ className }: { className?: string }) {
       disabled={isPending}
       onClick={() =>
         startTransition(async () => {
-          const result = await signInWithGoogle();
+          const result = await signInWithGoogle(next);
           // A successful call redirects, so reaching here means it failed.
           if (result?.status === "error") toast.error(result.message);
         })

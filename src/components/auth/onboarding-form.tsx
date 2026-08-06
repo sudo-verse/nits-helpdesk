@@ -16,11 +16,13 @@ export function OnboardingForm({
   email,
   departments,
   hostels,
+  next,
 }: {
   defaultName: string;
   email: string;
   departments: Option[];
   hostels: Option[];
+  next?: string;
 }) {
   const [state, formAction, isPending] = useActionState(
     completeOnboarding,
@@ -30,6 +32,8 @@ export function OnboardingForm({
 
   return (
     <Card as="form" action={formAction} className="flex flex-col gap-6 p-6">
+      {next && <input type="hidden" name="next" value={next} />}
+
       <Field label="Institute email">
         {/* Read-only: the profiles guard trigger rejects any email change. */}
         <Input value={email} readOnly disabled className="font-mono" />

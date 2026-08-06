@@ -26,11 +26,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // A signed-in user hitting the login screen belongs at their landing page.
+  // A signed-in user hitting the login screen belongs at their landing page —
+  // forwarding `next` handles a stale tab or shared link still carrying one.
   if (user && pathname === "/login") {
     const url = request.nextUrl.clone();
+    const next = request.nextUrl.searchParams.get("next");
     url.pathname = "/auth/post-login";
-    url.search = "";
+    url.search = next ? `next=${encodeURIComponent(next)}` : "";
     return NextResponse.redirect(url);
   }
 

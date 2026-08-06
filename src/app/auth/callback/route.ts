@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { isSafeNextPath } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -35,7 +36,9 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  return NextResponse.redirect(`${origin}/auth/post-login`);
+  const next = searchParams.get("next");
+  const forward = isSafeNextPath(next) ? `?next=${encodeURIComponent(next)}` : "";
+  return NextResponse.redirect(`${origin}/auth/post-login${forward}`);
 }
 
 /** Collapses provider/database errors into the codes the login page renders. */

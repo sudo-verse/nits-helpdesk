@@ -7,9 +7,16 @@ import { redirect } from "next/navigation";
 import { mapAuthError } from "@/lib/actions/map-auth-error";
 import { resolveLandingPath } from "@/lib/auth/session";
 import { env } from "@/lib/env";
+import { isSafeNextPath } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { onboardingSchema, signInSchema, signUpSchema } from "@/lib/validations/auth";
+
+/** FormData carries `next` as a plain string or omits the key — never an array. */
+function readNext(formData: FormData): string | null {
+  const value = formData.get("next");
+  return typeof value === "string" ? value : null;
+}
 
 export type ActionState =
   | { status: "idle" }
@@ -21,7 +28,7 @@ export type ActionState =
  *
  * The institute-domain check here is for the error message; the real
  * boundary is the handle_new_user() trigger, which aborts the auth.users
- * INSERT the same way it does for Google and OTP sign-ups.
+ * INSERT the same way it does for Google sign-ups.
  */
 export async function signUpWithPassword(
   _prev: ActionState,
@@ -75,7 +82,7 @@ export async function signUpWithPassword(
     };
   }
 
-  redirect(await resolveLandingPath());
+  redirect(await resolveLandingPath(readNext(formData)));
 }
 
 /** Sign in with an institute email and password. */
@@ -110,7 +117,7 @@ export async function signInWithPassword(
 
   if (error) return { status: "error", message: mapAuthError(error.message) };
 
-  redirect(await resolveLandingPath());
+  redirect(await resolveLandingPath(readNext(formData)));
 }
 
 function fieldErrorsFrom(error: {
@@ -124,13 +131,18 @@ function fieldErrorsFrom(error: {
   return fieldErrors;
 }
 
-export async function signInWithGoogle(): Promise<ActionState> {
+export async function signInWithGoogle(next?: string): Promise<ActionState> {
   const supabase = await createClient();
+
+  // Embedding `next` in redirectTo is the only way it survives the trip out
+  // to Google and back — nothing else about this request round-trips.
+  const redirectTo = new URL("/auth/callback", env.NEXT_PUBLIC_SITE_URL);
+  if (isSafeNextPath(next)) redirectTo.searchParams.set("next", next);
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      redirectTo: redirectTo.toString(),
       queryParams: {
         // Nudges Google's account chooser toward institute accounts. A
         // convenience only — `hd` can be stripped from the request, so the
@@ -195,7 +207,7 @@ export async function completeOnboarding(
   }
 
   revalidatePath("/", "layout");
-  redirect(await resolveLandingPath());
+  redirect(await resolveLandingPath(readNext(formData)));
 }
 
 export async function signOut() {

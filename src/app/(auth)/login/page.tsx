@@ -5,6 +5,7 @@ import Link from "next/link";
 import { GoogleButton } from "@/components/auth/google-button";
 import { PasswordAuthForm } from "@/components/auth/password-auth-form";
 import { Icon } from "@/components/ui/icon";
+import { isSafeNextPath } from "@/lib/navigation";
 
 export const metadata: Metadata = {
   title: "Sign in",
@@ -22,15 +23,19 @@ const ERROR_MESSAGES: Record<string, string> = {
   missing_code: "That sign-in link is incomplete. Request a new code.",
   signin_failed: "Something went wrong signing you in. Try again.",
   forbidden: "You do not have access to that page.",
+  session_expired: "Your reset link has expired or was already used. Request a new one.",
 };
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, next: rawNext } = await searchParams;
   const message = error ? (ERROR_MESSAGES[error] ?? ERROR_MESSAGES.signin_failed) : null;
+  // Sanitized once here so an unsafe value is never reflected into the DOM —
+  // the actions re-validate independently before ever acting on it.
+  const next = isSafeNextPath(rawNext) ? rawNext : undefined;
 
   return (
     <>
@@ -65,7 +70,7 @@ export default async function LoginPage({
         <div className="bg-surface-container-low text-on-surface-variant mb-2 rounded-lg p-4 text-center text-sm">
           Please use your institute email address (@nits.ac.in or @students.nits.ac.in) to sign in.
         </div>
-        <GoogleButton />
+        <GoogleButton next={next} />
 
         <div className="flex items-center gap-3" role="separator" aria-label="or">
           <div className="border-outline-variant h-px flex-1 border-t" />
@@ -73,7 +78,7 @@ export default async function LoginPage({
           <div className="border-outline-variant h-px flex-1 border-t" />
         </div>
 
-        <PasswordAuthForm />
+        <PasswordAuthForm next={next} />
       </div>
 
       <p className="text-label-sm text-on-surface-variant mt-12 text-center font-mono">

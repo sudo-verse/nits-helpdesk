@@ -76,3 +76,27 @@ export function isNavItemActive(pathname: string, href: string): boolean {
   if (isRoot) return pathname === href;
   return pathname === href || pathname.startsWith(`${href}/`);
 }
+
+/**
+ * Whether `candidate` is safe to redirect a signed-in user to after login.
+ *
+ * `next` arrives as a URL query param, so it is attacker-controlled — this is
+ * the one gate every caller trusts rather than re-implementing. Only a
+ * same-origin relative path is ever honoured.
+ */
+export function isSafeNextPath(candidate: unknown): candidate is string {
+  if (typeof candidate !== "string") return false;
+  if (candidate.length === 0 || candidate.length > 512) return false;
+  // Single leading slash only — rejects absolute URLs (https://evil.com),
+  // protocol-relative URLs (//evil.com, which resolves against the current
+  // scheme), and the backslash variant (/\evil.com) some browsers normalise
+  // to // before ever reaching a URL parser.
+  if (!/^\/(?!\/|\\)/.test(candidate)) return false;
+  // No backslashes, and no whitespace/control characters — both show up in
+  // real-world open-redirect bypass payloads.
+  if (/[\s\\]/.test(candidate)) return false;
+  // Defense in depth: closes off a scheme buried anywhere else in the string
+  // (e.g. inside a query value some future route re-parses).
+  if (candidate.includes("://")) return false;
+  return true;
+}
