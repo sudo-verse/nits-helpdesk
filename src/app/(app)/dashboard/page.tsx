@@ -17,9 +17,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
-async function Stats({ userId }: { userId: string }) {
-  const supabase = await createClient();
-  const counts = await getStatusCounts(supabase, { userId });
+async function Stats({ countsPromise }: { countsPromise: ReturnType<typeof getStatusCounts> }) {
+  const counts = await countsPromise;
 
   // "Pending" groups everything not yet actively worked, matching the design's
   // four-tile summary rather than one tile per database status.
@@ -35,9 +34,12 @@ async function Stats({ userId }: { userId: string }) {
   );
 }
 
-async function RecentComplaints({ userId }: { userId: string }) {
-  const supabase = await createClient();
-  const { items } = await listMyComplaints(supabase, userId, {}, { limit: 5, offset: 0 });
+async function RecentComplaints({
+  itemsPromise,
+}: {
+  itemsPromise: ReturnType<typeof listMyComplaints>;
+}) {
+  const { items } = await itemsPromise;
 
   if (!items.length) {
     return (
@@ -68,6 +70,14 @@ async function RecentComplaints({ userId }: { userId: string }) {
 
 export default async function DashboardPage() {
   const user = await requireUser();
+  const supabase = await createClient();
+
+  // Fired together rather than split between an eager Promise.all and later
+  // Suspense-triggered fetches — all four are independent once we have the
+  // user id, and starting them in one batch collapses what would otherwise be
+  // two sequential network round trips into one.
+  const statsPromise = getStatusCounts(supabase, { userId: user.id });
+  const recentPromise = listMyComplaints(supabase, user.id, {}, { limit: 5, offset: 0 });
   const [departments, unreadCount] = await Promise.all([
     getDepartments(),
     getUnreadCount(),
@@ -119,7 +129,7 @@ export default async function DashboardPage() {
           </div>
         }
       >
-        <Stats userId={user.id} />
+        <Stats countsPromise={statsPromise} />
       </Suspense>
 
       <section>
@@ -135,7 +145,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
         <Suspense fallback={<ListSkeleton count={3} />}>
-          <RecentComplaints userId={user.id} />
+          <RecentComplaints itemsPromise={recentPromise} />
         </Suspense>
       </section>
     </AppShell>

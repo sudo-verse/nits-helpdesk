@@ -20,6 +20,7 @@ const PAGE_SIZE = 12;
 const VALID_STATUSES: readonly string[] = [
   "submitted", "assigned", "under_review", "in_progress", "resolved", "closed",
 ];
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 type SearchParams = {
   q?: string;
@@ -37,35 +38,36 @@ export default async function ComplaintsPage({
 }) {
   const user = await requireUser();
   const sp = await searchParams;
-
-  const [departments, hostels, unreadCount] = await Promise.all([
-    getDepartments(),
-    getHostels(),
-    getUnreadCount(),
-  ]);
+  const supabase = await createClient();
 
   // Validate every URL parameter before it reaches a query — these are
-  // attacker-controlled strings, not trusted input.
+  // attacker-controlled strings, not trusted input. Format-checked locally
+  // (not against the fetched department/hostel lists) so this query can fire
+  // in the same round trip as getDepartments/getHostels rather than waiting
+  // on them — a well-formed but nonexistent id just matches zero rows, same
+  // as a rejected one would.
   const page = Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1);
   const filters: Filters = {
     search: sp.q,
     status: VALID_STATUSES.includes(sp.status ?? "")
       ? (sp.status as ComplaintStatus)
       : undefined,
-    departmentId: departments.some((d) => d.id === sp.department)
-      ? sp.department
-      : undefined,
-    hostelId: hostels.some((h) => h.id === sp.hostel) ? sp.hostel : undefined,
+    departmentId: UUID_RE.test(sp.department ?? "") ? sp.department : undefined,
+    hostelId: UUID_RE.test(sp.hostel ?? "") ? sp.hostel : undefined,
     priority: ["low", "medium", "high"].includes(sp.priority ?? "")
       ? (sp.priority as ComplaintPriority)
       : undefined,
   };
 
-  const supabase = await createClient();
-  const { items, total } = await listMyComplaints(supabase, user.id, filters, {
-    limit: PAGE_SIZE,
-    offset: (page - 1) * PAGE_SIZE,
-  });
+  const [{ items, total }, departments, hostels, unreadCount] = await Promise.all([
+    listMyComplaints(supabase, user.id, filters, {
+      limit: PAGE_SIZE,
+      offset: (page - 1) * PAGE_SIZE,
+    }),
+    getDepartments(),
+    getHostels(),
+    getUnreadCount(),
+  ]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const hasFilters = Boolean(
