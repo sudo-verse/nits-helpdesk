@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { GoogleButton } from "@/components/auth/google-button";
+import { PasswordAuthForm } from "@/components/auth/password-auth-form";
 import { Icon } from "@/components/ui/icon";
 
 export const metadata: Metadata = {
@@ -64,6 +65,14 @@ export default async function LoginPage({
           Please use your institute email address (@nits.ac.in or @students.nits.ac.in) to sign in.
         </div>
         <GoogleButton />
+
+        <div className="flex items-center gap-3" role="separator" aria-label="or">
+          <div className="border-outline-variant h-px flex-1 border-t" />
+          <span className="text-label-sm text-on-surface-variant font-mono uppercase">or</span>
+          <div className="border-outline-variant h-px flex-1 border-t" />
+        </div>
+
+        <PasswordAuthForm />
       </div>
 
       <p className="text-label-sm text-on-surface-variant mt-12 text-center font-mono">

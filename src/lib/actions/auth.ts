@@ -10,6 +10,8 @@ import { checkRateLimit } from "@/lib/utils/rate-limit";
 import {
   onboardingSchema,
   requestOtpSchema,
+  signInSchema,
+  signUpSchema,
   verifyOtpSchema,
 } from "@/lib/validations/auth";
 
@@ -109,6 +111,114 @@ export async function verifyOtp(
   redirect("/auth/post-login");
 }
 
+/**
+ * Create an account with an institute email and password.
+ *
+ * The institute-domain check here is for the error message; the real
+ * boundary is the handle_new_user() trigger, which aborts the auth.users
+ * INSERT the same way it does for Google and OTP sign-ups.
+ */
+export async function signUpWithPassword(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const parsed = signUpSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  });
+
+  if (!parsed.success) {
+    return {
+      status: "error",
+      message: parsed.error.issues[0]?.message ?? "Check the highlighted fields.",
+      fieldErrors: fieldErrorsFrom(parsed.error),
+    };
+  }
+
+  const { email, password } = parsed.data;
+
+  const ip =
+    (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const [emailOk, ipOk] = await Promise.all([
+    checkRateLimit(`signup:email:${email}`, 3, "15 minutes"),
+    checkRateLimit(`signup:ip:${ip}`, 10, "15 minutes"),
+  ]);
+
+  if (!emailOk || !ipOk) {
+    return {
+      status: "error",
+      message: "Too many attempts. Wait a few minutes and try again.",
+    };
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/callback` },
+  });
+
+  if (error) return { status: "error", message: mapAuthError(error.message) };
+
+  // A project with "Confirm email" on returns a user but no session — the
+  // account exists but cannot sign in until the link is clicked.
+  if (!data.session) {
+    return {
+      status: "success",
+      message: "Check your email to confirm your account before signing in.",
+    };
+  }
+
+  redirect("/auth/post-login");
+}
+
+/** Sign in with an institute email and password. */
+export async function signInWithPassword(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const parsed = signInSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+
+  if (!parsed.success) {
+    return {
+      status: "error",
+      message: parsed.error.issues[0]?.message ?? "Enter your email and password.",
+      fieldErrors: fieldErrorsFrom(parsed.error),
+    };
+  }
+
+  const { email, password } = parsed.data;
+
+  if (!(await checkRateLimit(`signin:${email}`, 8, "10 minutes"))) {
+    return {
+      status: "error",
+      message: "Too many attempts. Wait a few minutes and try again.",
+    };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) return { status: "error", message: mapAuthError(error.message) };
+
+  redirect("/auth/post-login");
+}
+
+function fieldErrorsFrom(error: {
+  issues: Array<{ path: PropertyKey[]; message: string }>;
+}) {
+  const fieldErrors: Record<string, string[]> = {};
+  for (const issue of error.issues) {
+    const key = String(issue.path[0] ?? "form");
+    (fieldErrors[key] ??= []).push(issue.message);
+  }
+  return fieldErrors;
+}
+
 export async function signInWithGoogle(): Promise<ActionState> {
   const supabase = await createClient();
 
@@ -145,12 +255,11 @@ export async function completeOnboarding(
   });
 
   if (!parsed.success) {
-    const fieldErrors: Record<string, string[]> = {};
-    for (const issue of parsed.error.issues) {
-      const key = String(issue.path[0] ?? "form");
-      (fieldErrors[key] ??= []).push(issue.message);
-    }
-    return { status: "error", message: "Check the highlighted fields.", fieldErrors };
+    return {
+      status: "error",
+      message: "Check the highlighted fields.",
+      fieldErrors: fieldErrorsFrom(parsed.error),
+    };
   }
 
   const supabase = await createClient();
@@ -206,6 +315,28 @@ function mapAuthError(message: string): string {
   }
   if (lower.includes("invalid") && lower.includes("token")) {
     return "That code is not correct. Check the email and try again.";
+  }
+  if (lower.includes("sending") && lower.includes("email")) {
+    // The account/domain checks already passed by this point — this is
+    // Supabase failing to deliver the confirmation mail itself (no SMTP
+    // configured, or the built-in sender's quota is exhausted).
+    return "We could not send a confirmation email right now. Try again shortly, or contact the helpdesk administrator.";
+  }
+  if (lower.includes("invalid login credentials")) {
+    return "Incorrect email or password.";
+  }
+  if (lower.includes("email not confirmed")) {
+    return "Confirm your email first — check your inbox for the confirmation link.";
+  }
+  if (
+    lower.includes("already registered") ||
+    lower.includes("already exists") ||
+    lower.includes("user already")
+  ) {
+    return "An account with that email already exists. Try signing in instead.";
+  }
+  if (lower.includes("password") && lower.includes("least")) {
+    return "Choose a longer password.";
   }
   if (lower.includes("rate") || lower.includes("too many")) {
     return "Too many attempts. Wait a few minutes and try again.";
