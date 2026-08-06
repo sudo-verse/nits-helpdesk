@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 import { GoogleButton } from "@/components/auth/google-button";
 import { PasswordAuthForm } from "@/components/auth/password-auth-form";
@@ -77,6 +78,17 @@ export default async function LoginPage({
 
       <p className="text-label-sm text-on-surface-variant mt-12 text-center font-mono">
         Helping make NIT Silchar better, together.
+      </p>
+      <p className="text-label-sm text-on-surface-variant mt-2 text-center">
+        By continuing you agree to our{" "}
+        <Link href="/terms" className="text-primary hover:underline">
+          Terms
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy" className="text-primary hover:underline">
+          Privacy Policy
+        </Link>
+        .
       </p>
     </>
   );

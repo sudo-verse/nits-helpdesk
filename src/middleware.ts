@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
 /** Reachable without a session. */
-const PUBLIC_PATHS = ["/login", "/verify", "/auth"];
+const PUBLIC_PATHS = ["/login", "/verify", "/auth", "/privacy", "/terms"];
 
 function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.some(
