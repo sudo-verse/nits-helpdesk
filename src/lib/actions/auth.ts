@@ -10,7 +10,13 @@ import { env } from "@/lib/env";
 import { isSafeNextPath } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
-import { onboardingSchema, signInSchema, signUpSchema } from "@/lib/validations/auth";
+import { fieldErrorsFrom } from "@/lib/utils/zod";
+import {
+  forgotPasswordSchema,
+  onboardingSchema,
+  signInSchema,
+  signUpSchema,
+} from "@/lib/validations/auth";
 
 /** FormData carries `next` as a plain string or omits the key — never an array. */
 function readNext(formData: FormData): string | null {
@@ -120,15 +126,61 @@ export async function signInWithPassword(
   redirect(await resolveLandingPath(readNext(formData)));
 }
 
-function fieldErrorsFrom(error: {
-  issues: Array<{ path: PropertyKey[]; message: string }>;
-}) {
-  const fieldErrors: Record<string, string[]> = {};
-  for (const issue of error.issues) {
-    const key = String(issue.path[0] ?? "form");
-    (fieldErrors[key] ??= []).push(issue.message);
+/**
+ * Request a password-reset email.
+ *
+ * Always returns the same generic message regardless of whether the address
+ * has an account, or whether the send itself failed — the only way to avoid
+ * leaking account existence through this endpoint. The rate-limit rejection
+ * below is shown distinctly, which is safe: the limiter runs before any
+ * account lookup and is keyed off the submitted string, not off whether it
+ * matches a real user.
+ */
+export async function requestPasswordReset(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const parsed = forgotPasswordSchema.safeParse({ email: formData.get("email") });
+
+  if (!parsed.success) {
+    return {
+      status: "error",
+      message: parsed.error.issues[0]?.message ?? "Enter a valid institute email.",
+      fieldErrors: fieldErrorsFrom(parsed.error),
+    };
   }
-  return fieldErrors;
+
+  const { email } = parsed.data;
+
+  const ip =
+    (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const [emailOk, ipOk] = await Promise.all([
+    checkRateLimit(`reset:email:${email}`, 3, "15 minutes"),
+    checkRateLimit(`reset:ip:${ip}`, 10, "15 minutes"),
+  ]);
+
+  if (!emailOk || !ipOk) {
+    return {
+      status: "error",
+      message: "Too many attempts. Wait a few minutes and try again.",
+    };
+  }
+
+  const supabase = await createClient();
+  const redirectTo = new URL("/auth/callback", env.NEXT_PUBLIC_SITE_URL);
+  // Belt and suspenders alongside the `type=recovery` Supabase is expected to
+  // append to the link itself — see the callback route for why both exist.
+  redirectTo.searchParams.set("next", "/reset-password");
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: redirectTo.toString(),
+  });
+  if (error) console.error("[requestPasswordReset]", error.message);
+
+  return {
+    status: "success",
+    message: "If that address has an account, we've sent a link to reset the password.",
+  };
 }
 
 export async function signInWithGoogle(next?: string): Promise<ActionState> {

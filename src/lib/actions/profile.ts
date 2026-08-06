@@ -11,6 +11,7 @@ import {
   STORAGE_BUCKETS,
 } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
+import { fieldErrorsFrom } from "@/lib/utils/zod";
 
 const profileSchema = z.object({
   name: z.string().trim().min(2, "Enter your full name.").max(80),
@@ -45,12 +46,11 @@ export async function updateProfile(
   });
 
   if (!parsed.success) {
-    const fieldErrors: Record<string, string[]> = {};
-    for (const issue of parsed.error.issues) {
-      const key = String(issue.path[0] ?? "form");
-      (fieldErrors[key] ??= []).push(issue.message);
-    }
-    return { status: "error", message: "Check the highlighted fields.", fieldErrors };
+    return {
+      status: "error",
+      message: "Check the highlighted fields.",
+      fieldErrors: fieldErrorsFrom(parsed.error),
+    };
   }
 
   const supabase = await createClient();

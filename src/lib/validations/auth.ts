@@ -26,6 +26,10 @@ export const signInSchema = z.object({
   password: z.string().min(1, "Enter your password."),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: instituteEmailSchema,
+});
+
 // 8 is stricter than Supabase's own minimum (6) — the project setting is
 // the real floor, this is just the app's preferred policy. Shared by every
 // schema below that collects a new password.
